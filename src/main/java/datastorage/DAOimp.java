@@ -7,18 +7,20 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class DAOimp<T> {
+public abstract class DAOimp<T> implements DAO<T>{
     protected Connection conn;
 
     public DAOimp(Connection conn) {
         this.conn = conn;
     }
 
+    @Override
     public void create(T t) throws SQLException {
         Statement st = conn.createStatement();
         st.executeUpdate(getCreateStatementString(t));
     }
 
+    @Override
     public T read(int key) throws SQLException {
         T object = null;
         Statement st = conn.createStatement();
@@ -29,6 +31,7 @@ public abstract class DAOimp<T> {
         return object;
     }
 
+    @Override
     public List<T> readAll() throws SQLException {
         ArrayList<T> list = new ArrayList<T>();
         T object = null;
@@ -38,11 +41,13 @@ public abstract class DAOimp<T> {
         return list;
     }
 
+    @Override
     public void update(T t) throws SQLException {
         Statement st = conn.createStatement();
         st.executeUpdate(getUpdateStatementString(t));
     }
 
+    @Override
     public void deleteById(int key) throws SQLException {
         Statement st = conn.createStatement();
         st.executeUpdate(getDeleteStatementString(key));

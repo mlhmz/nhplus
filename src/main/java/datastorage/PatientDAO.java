@@ -2,7 +2,6 @@ package datastorage;
 
 import model.Patient;
 import utils.DateConverter;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -39,7 +38,7 @@ public class PatientDAO extends DAOimp<Patient> {
      * @return <code>String</code> with the generated SQL.
      */
     @Override
-    protected String getReadByIDStatementString(int key) {
+    protected String getReadByIDStatementString(long key) {
         return String.format("SELECT * FROM patient WHERE pid = %d", key);
     }
 
@@ -104,7 +103,7 @@ public class PatientDAO extends DAOimp<Patient> {
      * @return <code>String</code> with the generated SQL.
      */
     @Override
-    protected String getDeleteStatementString(int key) {
+    protected String getDeleteStatementString(long key) {
         return String.format("Delete FROM patient WHERE pid=%d", key);
     }
 }

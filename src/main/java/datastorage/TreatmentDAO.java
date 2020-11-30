@@ -2,7 +2,6 @@ package datastorage;
 
 import model.Treatment;
 import utils.DateConverter;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,7 +26,7 @@ public class TreatmentDAO extends DAOimp<Treatment> {
     }
 
     @Override
-    protected String getReadByIDStatementString(int key) {
+    protected String getReadByIDStatementString(long key) {
         return String.format("SELECT * FROM treatment WHERE tid = %d", key);
     }
 
@@ -70,7 +69,7 @@ public class TreatmentDAO extends DAOimp<Treatment> {
     }
 
     @Override
-    protected String getDeleteStatementString(int key) {
+    protected String getDeleteStatementString(long key) {
         return String.format("Delete FROM treatment WHERE tid= %d", key);
     }
 
@@ -87,7 +86,7 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         return String.format("SELECT * FROM treatment WHERE pid = %d", pid);
     }
 
-    public void deleteByPid(int key) throws SQLException {
+    public void deleteByPid(long key) throws SQLException {
         Statement st = conn.createStatement();
         st.executeUpdate(String.format("Delete FROM treatment WHERE pid= %d", key));
     }

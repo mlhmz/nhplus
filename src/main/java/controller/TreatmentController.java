@@ -9,7 +9,6 @@ import javafx.stage.Stage;
 import model.Patient;
 import model.Treatment;
 import utils.DateConverter;
-
 import java.sql.SQLException;
 import java.time.LocalDate;
 

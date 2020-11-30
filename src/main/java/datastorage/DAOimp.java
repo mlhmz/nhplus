@@ -21,7 +21,7 @@ public abstract class DAOimp<T> implements DAO<T>{
     }
 
     @Override
-    public T read(int key) throws SQLException {
+    public T read(long key) throws SQLException {
         T object = null;
         Statement st = conn.createStatement();
         ResultSet result = st.executeQuery(getReadByIDStatementString(key));
@@ -48,14 +48,14 @@ public abstract class DAOimp<T> implements DAO<T>{
     }
 
     @Override
-    public void deleteById(int key) throws SQLException {
+    public void deleteById(long key) throws SQLException {
         Statement st = conn.createStatement();
         st.executeUpdate(getDeleteStatementString(key));
     }
 
     protected abstract String getCreateStatementString(T t);
 
-    protected abstract String getReadByIDStatementString(int key);
+    protected abstract String getReadByIDStatementString(long key);
 
     protected abstract T getInstanceFromResultSet(ResultSet set) throws SQLException;
 
@@ -65,5 +65,5 @@ public abstract class DAOimp<T> implements DAO<T>{
 
     protected abstract String getUpdateStatementString(T t);
 
-    protected abstract String getDeleteStatementString(int key);
+    protected abstract String getDeleteStatementString(long key);
 }

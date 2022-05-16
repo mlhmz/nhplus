@@ -48,8 +48,7 @@ public abstract class DAOimp<T> implements DAO<T>{
     }
 
     protected PreparedStatement getPreparedStatement(String preparedStatementString) throws SQLException {
-        PreparedStatement statement = conn.prepareStatement(preparedStatementString);
-        return statement;
+        return conn.prepareStatement(preparedStatementString);
     }
     protected abstract PreparedStatement getCreateStatementString(T t) throws SQLException;
 

@@ -1,9 +1,6 @@
 package datastorage;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,15 +13,14 @@ public abstract class DAOimp<T> implements DAO<T>{
 
     @Override
     public void create(T t) throws SQLException {
-        Statement st = conn.createStatement();
-        st.executeUpdate(getCreateStatementString(t));
+        getCreateStatementString(t).executeUpdate();
     }
 
     @Override
     public T read(long key) throws SQLException {
         T object = null;
         Statement st = conn.createStatement();
-        ResultSet result = st.executeQuery(getReadByIDStatementString(key));
+        ResultSet result = getReadByIDStatementString(key).executeQuery();
         if (result.next()) {
             object = getInstanceFromResultSet(result);
         }
@@ -36,34 +32,36 @@ public abstract class DAOimp<T> implements DAO<T>{
         ArrayList<T> list = new ArrayList<T>();
         T object = null;
         Statement st = conn.createStatement();
-        ResultSet result = st.executeQuery(getReadAllStatementString());
+        ResultSet result = getReadAllStatementString().executeQuery();
         list = getListFromResultSet(result);
         return list;
     }
 
     @Override
     public void update(T t) throws SQLException {
-        Statement st = conn.createStatement();
-        st.executeUpdate(getUpdateStatementString(t));
+        getUpdateStatementString(t).executeUpdate();
     }
 
     @Override
     public void deleteById(long key) throws SQLException {
-        Statement st = conn.createStatement();
-        st.executeUpdate(getDeleteStatementString(key));
+        getDeleteStatementString(key).executeUpdate();
     }
 
-    protected abstract String getCreateStatementString(T t);
+    protected PreparedStatement getPreparedStatement(String preparedStatementString) throws SQLException {
+        PreparedStatement statement = conn.prepareStatement(preparedStatementString);
+        return statement;
+    }
+    protected abstract PreparedStatement getCreateStatementString(T t) throws SQLException;
 
-    protected abstract String getReadByIDStatementString(long key);
+    protected abstract PreparedStatement getReadByIDStatementString(long key) throws SQLException;
 
     protected abstract T getInstanceFromResultSet(ResultSet set) throws SQLException;
 
-    protected abstract String getReadAllStatementString();
+    protected abstract PreparedStatement getReadAllStatementString() throws SQLException;
 
     protected abstract ArrayList<T> getListFromResultSet(ResultSet set) throws SQLException;
 
-    protected abstract String getUpdateStatementString(T t);
+    protected abstract PreparedStatement getUpdateStatementString(T t) throws SQLException;
 
-    protected abstract String getDeleteStatementString(long key);
+    protected abstract PreparedStatement getDeleteStatementString(long key) throws SQLException;
 }

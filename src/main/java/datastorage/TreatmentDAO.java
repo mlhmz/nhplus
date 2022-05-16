@@ -2,10 +2,8 @@ package datastorage;
 
 import model.Treatment;
 import utils.DateConverter;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+
+import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -18,16 +16,17 @@ public class TreatmentDAO extends DAOimp<Treatment> {
     }
 
     @Override
-    protected String getCreateStatementString(Treatment treatment) {
-        return String.format("INSERT INTO treatment (pid, treatment_date, begin, end, description, remarks) VALUES " +
-                "(%d, '%s', '%s', '%s', '%s', '%s')", treatment.getPid(), treatment.getDate(),
-                treatment.getBegin(), treatment.getEnd(), treatment.getDescription(),
-                treatment.getRemarks());
+    protected PreparedStatement getCreateStatementString(Treatment treatment) throws SQLException {
+        PreparedStatement preparedStatement = getPreparedStatement("INSERT INTO treatment (pid, treatment_date, begin, end, description, remarks) VALUES (?, ?, ?, ?, ?, ?);");
+        fillPreparedStatement(treatment, preparedStatement);
+        return preparedStatement;
     }
 
     @Override
-    protected String getReadByIDStatementString(long key) {
-        return String.format("SELECT * FROM treatment WHERE tid = %d", key);
+    protected PreparedStatement getReadByIDStatementString(long key) throws SQLException {
+        PreparedStatement preparedStatement = getPreparedStatement("SELECT * FROM treatment WHERE tid = ?");
+        preparedStatement.setLong(1, key);
+        return preparedStatement;
     }
 
     @Override
@@ -41,8 +40,8 @@ public class TreatmentDAO extends DAOimp<Treatment> {
     }
 
     @Override
-    protected String getReadAllStatementString() {
-        return "SELECT * FROM treatment";
+    protected PreparedStatement getReadAllStatementString() throws SQLException {
+        return getPreparedStatement("SELECT * FROM treatment");
     }
 
     @Override
@@ -61,33 +60,46 @@ public class TreatmentDAO extends DAOimp<Treatment> {
     }
 
     @Override
-    protected String getUpdateStatementString(Treatment treatment) {
-        return String.format("UPDATE treatment SET pid = %d, treatment_date ='%s', begin = '%s', end = '%s'," +
-                "description = '%s', remarks = '%s' WHERE tid = %d", treatment.getPid(), treatment.getDate(),
-                treatment.getBegin(), treatment.getEnd(), treatment.getDescription(), treatment.getRemarks(),
-                treatment.getTid());
+    protected PreparedStatement getUpdateStatementString(Treatment treatment) throws SQLException {
+        PreparedStatement preparedStatement = getPreparedStatement("UPDATE treatment SET pid = ?, treatment_date = ?, begin = ?, end = ?, description = ?, remarks = ?, WHERE tid = ?");
+        fillPreparedStatement(treatment, preparedStatement);
+        preparedStatement.setLong(7, treatment.getTid());
+        return preparedStatement;
+    }
+
+    private void fillPreparedStatement(Treatment treatment, PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setLong(1, treatment.getPid());
+        preparedStatement.setString(2, treatment.getDate());
+        preparedStatement.setString(3, treatment.getBegin());
+        preparedStatement.setString(4, treatment.getEnd());
+        preparedStatement.setString(5, treatment.getDescription());
+        preparedStatement.setString(6, treatment.getRemarks());
     }
 
     @Override
-    protected String getDeleteStatementString(long key) {
-        return String.format("Delete FROM treatment WHERE tid= %d", key);
+    protected PreparedStatement getDeleteStatementString(long key) throws SQLException {
+        PreparedStatement preparedStatement = getPreparedStatement("DELETE FROM treatment WHERE tid = ?");
+        preparedStatement.setLong(1, key);
+        return preparedStatement;
     }
 
     public List<Treatment> readTreatmentsByPid(long pid) throws SQLException {
         ArrayList<Treatment> list = new ArrayList<Treatment>();
         Treatment object = null;
         Statement st = conn.createStatement();
-        ResultSet result = st.executeQuery(getReadAllTreatmentsOfOnePatientByPid(pid));
+        ResultSet result = getReadAllTreatmentsOfOnePatientByPid(pid).executeQuery();
         list = getListFromResultSet(result);
         return list;
     }
 
-    private String getReadAllTreatmentsOfOnePatientByPid(long pid){
-        return String.format("SELECT * FROM treatment WHERE pid = %d", pid);
+    private PreparedStatement getReadAllTreatmentsOfOnePatientByPid(long pid) throws SQLException {
+        PreparedStatement preparedStatement = getPreparedStatement("SELECT * FROM treatment WHERE pid = ?");
+        preparedStatement.setLong(1, pid);
+        return preparedStatement;
     }
 
     public void deleteByPid(long key) throws SQLException {
-        Statement st = conn.createStatement();
-        st.executeUpdate(String.format("Delete FROM treatment WHERE pid= %d", key));
+        PreparedStatement preparedStatement = getPreparedStatement("Delete FROM treatment WHERE pid = ?");
+        preparedStatement.setLong(1, key);
     }
 }

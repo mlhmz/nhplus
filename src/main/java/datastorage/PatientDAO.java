@@ -3,6 +3,7 @@ package datastorage;
 import model.Patient;
 import utils.DateConverter;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -27,10 +28,13 @@ public class PatientDAO extends DAOimp<Patient> {
      * @return <code>String</code> with the generated SQL.
      */
     @Override
-    protected String getCreateStatementString(Patient patient) {
-        return String.format("INSERT INTO patient (firstname, surname, dateOfBirth, carelevel, roomnumber) VALUES ('%s', '%s', '%s', '%s', '%s')",
-                patient.getFirstName(), patient.getSurname(), patient.getDateOfBirth(), patient.getCareLevel(), patient.getRoomnumber());
+    protected PreparedStatement getCreateStatementString(Patient patient) throws SQLException {
+        PreparedStatement statement = getPreparedStatement("INSERT INTO patient (firstname, surname, dateOfBirth, carelevel, roomnumber) VALUES (?, ?, ?, ?, ?)");
+        fillPreparedStatement(patient, statement);
+        return statement;
     }
+
+
 
     /**
      * generates a <code>select</code>-Statement for a given key
@@ -38,8 +42,10 @@ public class PatientDAO extends DAOimp<Patient> {
      * @return <code>String</code> with the generated SQL.
      */
     @Override
-    protected String getReadByIDStatementString(long key) {
-        return String.format("SELECT * FROM patient WHERE pid = %d", key);
+    protected PreparedStatement getReadByIDStatementString(long key) throws SQLException {
+        PreparedStatement preparedStatement = getPreparedStatement("SELECT * FROM patient WHERE pid = ?");
+        preparedStatement.setLong(1, key);
+        return preparedStatement;
     }
 
     /**
@@ -62,8 +68,8 @@ public class PatientDAO extends DAOimp<Patient> {
      * @return <code>String</code> with the generated SQL.
      */
     @Override
-    protected String getReadAllStatementString() {
-        return "SELECT * FROM patient";
+    protected PreparedStatement getReadAllStatementString() throws SQLException {
+        return getPreparedStatement("SELECT * FROM patient");
     }
 
     /**
@@ -91,10 +97,18 @@ public class PatientDAO extends DAOimp<Patient> {
      * @return <code>String</code> with the generated SQL.
      */
     @Override
-    protected String getUpdateStatementString(Patient patient) {
-        return String.format("UPDATE patient SET firstname = '%s', surname = '%s', dateOfBirth = '%s', carelevel = '%s', " +
-                "roomnumber = '%s'", patient.getFirstName(), patient.getSurname(), patient.getDateOfBirth(),
-                patient.getCareLevel(), patient.getRoomnumber(), patient.getPid());
+    protected PreparedStatement getUpdateStatementString(Patient patient) throws SQLException {
+        PreparedStatement preparedStatement = getPreparedStatement("UPDATE patient SET firstname = ?, surname = ?, dateOfBirth = ?, carelevel = ?, roomnumber = ?");
+        fillPreparedStatement(patient, preparedStatement);
+        return preparedStatement;
+    }
+
+    private void fillPreparedStatement(Patient patient, PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setString(1, patient.getFirstName());
+        preparedStatement.setString(2, patient.getSurname());
+        preparedStatement.setString(3, patient.getDateOfBirth());
+        preparedStatement.setString(4, patient.getCareLevel());
+        preparedStatement.setString(5, patient.getRoomnumber());
     }
 
     /**
@@ -103,7 +117,9 @@ public class PatientDAO extends DAOimp<Patient> {
      * @return <code>String</code> with the generated SQL.
      */
     @Override
-    protected String getDeleteStatementString(long key) {
-        return String.format("Delete FROM patient WHERE pid=%d", key);
+    protected PreparedStatement getDeleteStatementString(long key) throws SQLException {
+        PreparedStatement preparedStatement = getPreparedStatement("Delete FROM patient WHERE pid = ?");
+        preparedStatement.setLong(1, key);
+        return preparedStatement;
     }
 }

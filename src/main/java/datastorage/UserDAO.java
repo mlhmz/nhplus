@@ -14,7 +14,7 @@ public class UserDAO extends DAOimp<User> {
     }
 
     @Override
-    protected PreparedStatement getCreateStatementString(User user) throws SQLException {
+    protected PreparedStatement getCreateStatement(User user) throws SQLException {
         PreparedStatement statement = getPreparedStatement("INSERT INTO user " +
                 "(lastName, firstName, email, password) VALUES (?, ?, ?, ?)");
         fillPreparedStatement(user, statement);
@@ -22,7 +22,7 @@ public class UserDAO extends DAOimp<User> {
     }
 
     @Override
-    protected PreparedStatement getReadByIDStatementString(long key) throws SQLException {
+    protected PreparedStatement getReadByIDStatement(long key) throws SQLException {
         PreparedStatement statement = getPreparedStatement("SELECT * FROM user WHERE uid = ?");
         statement.setLong(1, key);
         return statement;
@@ -36,7 +36,7 @@ public class UserDAO extends DAOimp<User> {
     }
 
     @Override
-    protected PreparedStatement getReadAllStatementString() throws SQLException {
+    protected PreparedStatement getReadAllStatement() throws SQLException {
         return getPreparedStatement("SELECT * FROM user");
     }
 
@@ -52,7 +52,7 @@ public class UserDAO extends DAOimp<User> {
     }
 
     @Override
-    protected PreparedStatement getUpdateStatementString(User user) throws SQLException {
+    protected PreparedStatement getUpdateStatement(User user) throws SQLException {
         PreparedStatement preparedStatement = getPreparedStatement("UPDATE user SET lastName = ?, firstName = ?, email = ?, password = ? WHERE uid = ?,");
         fillPreparedStatement(user, preparedStatement);
         preparedStatement.setLong(5, user.getUid());
@@ -60,7 +60,7 @@ public class UserDAO extends DAOimp<User> {
     }
 
     @Override
-    protected PreparedStatement getDeleteStatementString(long key) throws SQLException {
+    protected PreparedStatement getDeleteStatement(long key) throws SQLException {
         PreparedStatement preparedStatement = getPreparedStatement("DELETE FROM user WHERE uid = ?");
         preparedStatement.setLong(1, key);
         return preparedStatement;

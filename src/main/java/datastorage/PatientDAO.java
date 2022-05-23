@@ -28,7 +28,7 @@ public class PatientDAO extends DAOimp<Patient> {
      * @return <code>String</code> with the generated SQL.
      */
     @Override
-    protected PreparedStatement getCreateStatementString(Patient patient) throws SQLException {
+    protected PreparedStatement getCreateStatement(Patient patient) throws SQLException {
         PreparedStatement statement = getPreparedStatement("INSERT INTO patient (firstname, surname, dateOfBirth, carelevel, roomnumber) VALUES (?, ?, ?, ?, ?)");
         fillPreparedStatement(patient, statement);
         return statement;
@@ -42,7 +42,7 @@ public class PatientDAO extends DAOimp<Patient> {
      * @return <code>String</code> with the generated SQL.
      */
     @Override
-    protected PreparedStatement getReadByIDStatementString(long key) throws SQLException {
+    protected PreparedStatement getReadByIDStatement(long key) throws SQLException {
         PreparedStatement preparedStatement = getPreparedStatement("SELECT * FROM patient WHERE pid = ?");
         preparedStatement.setLong(1, key);
         return preparedStatement;
@@ -68,7 +68,7 @@ public class PatientDAO extends DAOimp<Patient> {
      * @return <code>String</code> with the generated SQL.
      */
     @Override
-    protected PreparedStatement getReadAllStatementString() throws SQLException {
+    protected PreparedStatement getReadAllStatement() throws SQLException {
         return getPreparedStatement("SELECT * FROM patient");
     }
 
@@ -97,7 +97,7 @@ public class PatientDAO extends DAOimp<Patient> {
      * @return <code>String</code> with the generated SQL.
      */
     @Override
-    protected PreparedStatement getUpdateStatementString(Patient patient) throws SQLException {
+    protected PreparedStatement getUpdateStatement(Patient patient) throws SQLException {
         PreparedStatement preparedStatement = getPreparedStatement("UPDATE patient SET firstname = ?, surname = ?, dateOfBirth = ?, carelevel = ?, roomnumber = ?");
         fillPreparedStatement(patient, preparedStatement);
         return preparedStatement;
@@ -117,7 +117,7 @@ public class PatientDAO extends DAOimp<Patient> {
      * @return <code>String</code> with the generated SQL.
      */
     @Override
-    protected PreparedStatement getDeleteStatementString(long key) throws SQLException {
+    protected PreparedStatement getDeleteStatement(long key) throws SQLException {
         PreparedStatement preparedStatement = getPreparedStatement("Delete FROM patient WHERE pid = ?");
         preparedStatement.setLong(1, key);
         return preparedStatement;

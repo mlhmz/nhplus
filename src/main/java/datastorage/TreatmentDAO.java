@@ -16,14 +16,14 @@ public class TreatmentDAO extends DAOimp<Treatment> {
     }
 
     @Override
-    protected PreparedStatement getCreateStatementString(Treatment treatment) throws SQLException {
+    protected PreparedStatement getCreateStatement(Treatment treatment) throws SQLException {
         PreparedStatement preparedStatement = getPreparedStatement("INSERT INTO treatment (pid, treatment_date, begin, end, description, remarks) VALUES (?, ?, ?, ?, ?, ?);");
         fillPreparedStatement(treatment, preparedStatement);
         return preparedStatement;
     }
 
     @Override
-    protected PreparedStatement getReadByIDStatementString(long key) throws SQLException {
+    protected PreparedStatement getReadByIDStatement(long key) throws SQLException {
         PreparedStatement preparedStatement = getPreparedStatement("SELECT * FROM treatment WHERE tid = ?");
         preparedStatement.setLong(1, key);
         return preparedStatement;
@@ -40,7 +40,7 @@ public class TreatmentDAO extends DAOimp<Treatment> {
     }
 
     @Override
-    protected PreparedStatement getReadAllStatementString() throws SQLException {
+    protected PreparedStatement getReadAllStatement() throws SQLException {
         return getPreparedStatement("SELECT * FROM treatment");
     }
 
@@ -60,7 +60,7 @@ public class TreatmentDAO extends DAOimp<Treatment> {
     }
 
     @Override
-    protected PreparedStatement getUpdateStatementString(Treatment treatment) throws SQLException {
+    protected PreparedStatement getUpdateStatement(Treatment treatment) throws SQLException {
         PreparedStatement preparedStatement = getPreparedStatement("UPDATE treatment SET pid = ?, treatment_date = ?, begin = ?, end = ?, description = ?, remarks = ?, WHERE tid = ?");
         fillPreparedStatement(treatment, preparedStatement);
         preparedStatement.setLong(7, treatment.getTid());
@@ -77,7 +77,7 @@ public class TreatmentDAO extends DAOimp<Treatment> {
     }
 
     @Override
-    protected PreparedStatement getDeleteStatementString(long key) throws SQLException {
+    protected PreparedStatement getDeleteStatement(long key) throws SQLException {
         PreparedStatement preparedStatement = getPreparedStatement("DELETE FROM treatment WHERE tid = ?");
         preparedStatement.setLong(1, key);
         return preparedStatement;

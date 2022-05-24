@@ -1,52 +1,47 @@
 package controller;
 
-import datastorage.ConnectionBuilder;
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
+import utils.AlertCreator;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class Main extends Application {
 
     private Stage primaryStage;
+    private Stage loginStage;
 
     @Override
-    public void start(Stage primaryStage) {
-        this.primaryStage = primaryStage;
-        mainWindow();
+    public void start(Stage loginStage) {
+        this.loginStage = loginStage;
+        executeLoginWindow();
     }
 
-    public void mainWindow() {
+    public void executeLoginWindow() {
         try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/MainWindowView.fxml"));
-            BorderPane pane = loader.load();
-
-            Scene scene = new Scene(pane);
-            this.primaryStage.setTitle("NHPlus");
-            this.primaryStage.setScene(scene);
-            this.primaryStage.setResizable(false);
-            this.primaryStage.show();
-
-            this.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-                @Override
-                public void handle(WindowEvent e) {
-                    ConnectionBuilder.closeConnection();
-                    Platform.exit();
-                    System.exit(0);
-                }
-            });
+            createLoginWindow();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
 
+    private void createLoginWindow() throws IOException {
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource("/LoginView.fxml"));
+        AnchorPane pane = loader.load();
+        Scene scene = new Scene(pane);
+
+        LoginController controller = loader.getController();
+        controller.setStage(this.loginStage);
+
+        this.loginStage.setTitle("NHPlus - Login");
+        this.loginStage.setScene(scene);
+        this.loginStage.show();
+    }
     public static void main(String[] args) {
         launch(args);
     }

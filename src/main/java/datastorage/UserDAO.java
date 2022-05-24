@@ -2,42 +2,63 @@ package datastorage;
 
 import model.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class UserDAO extends DAOimp<User> {
+
+    public static final String USERS_TABLE_NAME = "users";
+
     public UserDAO(Connection conn) {
         super(conn);
     }
 
     @Override
     protected PreparedStatement getCreateStatement(User user) throws SQLException {
-        PreparedStatement statement = getPreparedStatement("INSERT INTO user " +
-                "(lastName, firstName, email, password) VALUES (?, ?, ?, ?)");
+        PreparedStatement statement = getPreparedStatement(
+                String.format("INSERT INTO %s ", USERS_TABLE_NAME) +
+                "(lastName, firstName, username, password) VALUES (?, ?, ?, ?)");
         fillPreparedStatement(user, statement);
         return statement;
     }
 
     @Override
     protected PreparedStatement getReadByIDStatement(long key) throws SQLException {
-        PreparedStatement statement = getPreparedStatement("SELECT * FROM user WHERE uid = ?");
+        PreparedStatement statement = getPreparedStatement(
+                String.format("SELECT * FROM %s WHERE uid = ?", USERS_TABLE_NAME)
+        );
         statement.setLong(1, key);
         return statement;
+    }
+
+    private PreparedStatement getReadByUsername(String username) throws SQLException {
+        PreparedStatement statement = getPreparedStatement(
+                String.format("SELECT * FROM %s WHERE username = ?", USERS_TABLE_NAME)
+        );
+        statement.setString(1, username);
+        return statement;
+    }
+
+    public User readByUsername(String username) throws SQLException {
+        User object = null;
+        Statement st = conn.createStatement();
+        ResultSet result = getReadByUsername(username).executeQuery();
+        if (result.next()) {
+            object = getInstanceFromResultSet(result);
+        }
+        return object;
     }
 
     @Override
     protected User getInstanceFromResultSet(ResultSet set) throws SQLException {
         return new User(set.getLong("uid"), set.getString("lastName"),
-                set.getString("firstName"), set.getString("email"),
+                set.getString("firstName"), set.getString("username"),
                 set.getString("password"));
     }
 
     @Override
     protected PreparedStatement getReadAllStatement() throws SQLException {
-        return getPreparedStatement("SELECT * FROM user");
+        return getPreparedStatement(String.format("SELECT * FROM %s", USERS_TABLE_NAME));
     }
 
     @Override
@@ -45,7 +66,7 @@ public class UserDAO extends DAOimp<User> {
         ArrayList<User> users = new ArrayList<>();
         while (set.next()) {
             users.add(new User(set.getLong("uid"), set.getString("lastName"),
-                    set.getString("firstName"), set.getString("email"),
+                    set.getString("firstName"), set.getString("username"),
                     set.getString("password")));
         }
         return users;
@@ -53,7 +74,9 @@ public class UserDAO extends DAOimp<User> {
 
     @Override
     protected PreparedStatement getUpdateStatement(User user) throws SQLException {
-        PreparedStatement preparedStatement = getPreparedStatement("UPDATE user SET lastName = ?, firstName = ?, email = ?, password = ? WHERE uid = ?,");
+        PreparedStatement preparedStatement = getPreparedStatement(
+                String.format("UPDATE %s SET ", USERS_TABLE_NAME) +
+                "lastName = ?, firstName = ?, username = ?, password = ? WHERE uid = ?,");
         fillPreparedStatement(user, preparedStatement);
         preparedStatement.setLong(5, user.getUid());
         return preparedStatement;
@@ -61,7 +84,8 @@ public class UserDAO extends DAOimp<User> {
 
     @Override
     protected PreparedStatement getDeleteStatement(long key) throws SQLException {
-        PreparedStatement preparedStatement = getPreparedStatement("DELETE FROM user WHERE uid = ?");
+        PreparedStatement preparedStatement = getPreparedStatement(String.format("DELETE FROM %s WHERE uid = ?",
+                USERS_TABLE_NAME));
         preparedStatement.setLong(1, key);
         return preparedStatement;
     }
@@ -69,7 +93,7 @@ public class UserDAO extends DAOimp<User> {
     private void fillPreparedStatement(User user, PreparedStatement statement) throws SQLException {
         statement.setString(1, user.getLastName());
         statement.setString(2, user.getFirstName());
-        statement.setString(3, user.getLastName());
+        statement.setString(3, user.getUsername());
         statement.setString(4, user.getPassword());
     }
 }

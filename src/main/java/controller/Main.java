@@ -5,14 +5,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import utils.AlertCreator;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 public class Main extends Application {
-
-    private Stage primaryStage;
     private Stage loginStage;
 
     @Override
@@ -25,7 +21,6 @@ public class Main extends Application {
         try {
             createLoginWindow();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

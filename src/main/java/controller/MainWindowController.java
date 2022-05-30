@@ -4,16 +4,15 @@ import datastorage.UserSession;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import model.User;
 
 import java.io.IOException;
 
+/**
+ * homepage of the application
+ */
 public class MainWindowController {
     @FXML
     private BorderPane mainBorderPane;

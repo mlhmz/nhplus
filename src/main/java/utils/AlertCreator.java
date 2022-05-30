@@ -2,6 +2,11 @@ package utils;
 
 import javafx.scene.control.Alert;
 
+/**
+ * Util class to create JavaFX alerts
+ *
+ * @see Alert
+ */
 public class AlertCreator {
     /**
      * creates alert with the status <code>AlertType.INFORMATION</code>
@@ -30,6 +35,15 @@ public class AlertCreator {
         return createAlert(title, headerText, contentText, Alert.AlertType.ERROR);
     }
 
+    /**
+     * Creates a JavaFX Alert
+     *
+     * @param title title that is used on the window frame
+     * @param headerText header of the message
+     * @param contentText content of the message
+     * @param alertType the alert type see {@link Alert.AlertType}
+     * @return JavaFX Alert
+     */
     public static Alert createAlert(String title, String headerText, String contentText, Alert.AlertType alertType) {
         Alert alert = new Alert(alertType);
         if (title != null) {

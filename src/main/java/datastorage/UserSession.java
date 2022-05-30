@@ -2,9 +2,6 @@ package datastorage;
 
 import model.User;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 /**
  * Singleton for <code>User</code> in order to keep the logged-in user stored
  */

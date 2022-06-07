@@ -36,6 +36,9 @@ public abstract class Controller {
     public Stage create() {
         try {
             stage = loadViewAndCreateStage();
+            stage.setTitle(getWindowTitle() != null && getWindowTitle().length() > 0 ?
+                    "NHPlus - " + getWindowTitle() : "NHPlus"
+            );
             return stage;
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -96,6 +99,11 @@ public abstract class Controller {
      * default javafx initialize class
      */
     public abstract void initialize();
+
+    /**
+     * method to set window title to NHPlus - <code>TEXT</code>, if left empty, the window title will be set to NHPlus
+     */
+    public abstract String getWindowTitle();
 
     /**
      * the permitted groups for the view and controller

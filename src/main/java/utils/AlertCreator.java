@@ -8,6 +8,20 @@ import javafx.scene.control.Alert;
  * @see Alert
  */
 public class AlertCreator {
+    public static final String INFORMATION_TITLE = "Information";
+    public static final String WARNING_TITLE = "Warnung!";
+    public static final String ERROR_TITLE = "Ein Fehler ist aufgetreten!";
+
+    /**
+     * creates alert with the status <code>AlertType.INFORMATION</code>
+     * gets title from final in class
+     *
+     * @return information alert
+     */
+    public static Alert createInformation(String headerText, String contentText) {
+        return createAlert(INFORMATION_TITLE, headerText, contentText, Alert.AlertType.INFORMATION);
+    }
+
     /**
      * creates alert with the status <code>AlertType.INFORMATION</code>
      *
@@ -22,8 +36,26 @@ public class AlertCreator {
      *
      * @return warning alert
      */
+    public static Alert createWarning(String headerText, String contentText) {
+        return createAlert(WARNING_TITLE, headerText, contentText, Alert.AlertType.WARNING);
+    }
+
+    /**
+     * creates alert with the status <code>AlertType.WARNING</code>
+     *
+     * @return warning alert
+     */
     public static Alert createWarning(String title, String headerText, String contentText) {
         return createAlert(title, headerText, contentText, Alert.AlertType.WARNING);
+    }
+
+    /**
+     * creates alert with the status <code>AlertType.ERROR</code>
+     *
+     * @return error alert
+     */
+    public static Alert createError(String headerText, String contentText) {
+        return createAlert(ERROR_TITLE, headerText, contentText, Alert.AlertType.ERROR);
     }
 
     /**

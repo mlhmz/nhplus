@@ -1,37 +1,25 @@
 package controller;
 
 import datastorage.UserSession;
+import enums.Group;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
-
-import java.io.IOException;
 
 /**
  * homepage of the application
  */
-public class MainWindowController {
+public class MainWindowController extends Controller {
     @FXML
     private BorderPane mainBorderPane;
     @FXML
     public Text userSessionText;
 
-    private Stage stage;
-    private Stage loginStage;
+    private Controller allPatientController, allTreatmentController;
 
     public void initialize() {
         setUserSessionLabel();
-    }
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
-    public void setLoginStage(Stage stage) {
-        this.loginStage = stage;
     }
 
     private void setUserSessionLabel() {
@@ -44,30 +32,46 @@ public class MainWindowController {
 
     @FXML
     private void handleShowAllPatient(ActionEvent e) {
-        FXMLLoader loader = new FXMLLoader(Main.class.getResource("/AllPatientView.fxml"));
-        try {
-            mainBorderPane.setCenter(loader.load());
-        } catch (IOException ex) {
-            ex.printStackTrace();
+        if (allPatientController == null) {
+            allPatientController = new AllPatientController();
         }
-        AllPatientController controller = loader.getController();
+        mainBorderPane.setCenter(allPatientController.getStage().getScene().getRoot());
     }
 
     @FXML
     private void handleShowAllTreatments(ActionEvent e) {
-        FXMLLoader loader = new FXMLLoader(Main.class.getResource("/AllTreatmentView.fxml"));
-        try {
-            mainBorderPane.setCenter(loader.load());
-        } catch (IOException ex) {
-            ex.printStackTrace();
+        if (allTreatmentController == null) {
+            allTreatmentController = new AllTreatmentController();
         }
-        AllTreatmentController controller = loader.getController();
+        mainBorderPane.setCenter(allTreatmentController.getStage().getScene().getRoot());
     }
 
     @FXML
     private void handleLogout() {
         UserSession.getInstance().clear();
-        loginStage.show();
+        ControllerManager.getInstance().getLoginStage().show();
         stage.close();
+    }
+
+    @Override
+    public String getWindowTitle() {
+        // Window Title is left empty here because the main window should only show "NHPlus"
+        return null;
+    }
+
+    @Override
+    public boolean isClosingAppOnX() {
+        return true;
+    }
+
+    @Override
+    public String getFxmlPath() {
+        return "/MainWindowView.fxml";
+    }
+
+    @Override
+    public Group[] getPermittedGroups() {
+        // all groups are permitted to use this controller with Group#values()
+        return Group.values();
     }
 }

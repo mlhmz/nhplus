@@ -5,25 +5,19 @@ import datastorage.ConnectionBuilder;
 import datastorage.DAOFactory;
 import datastorage.UserDAO;
 import datastorage.UserSession;
+import enums.Group;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
+import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 import model.User;
 import utils.AlertCreator;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
-public class LoginController {
+public class LoginController extends Controller {
     @FXML
     TextField username;
     @FXML
@@ -33,13 +27,12 @@ public class LoginController {
 
     private final UserDAO dao;
 
-    private Stage stage;
 
     public LoginController() {
         dao = DAOFactory.getDAOFactory().createUserDAO();
     }
 
-    public void initialize() throws IOException {
+    public void initialize() {
         List<User> users = null;
 
         try {
@@ -52,44 +45,13 @@ public class LoginController {
             System.exit(0);
         }
 
-        if (!(users == null || users.isEmpty())) {
-            return;
-        }
+        if (!(users == null || users.isEmpty())) return;
 
         AlertCreator.createWarning("Warnung", "Anwendung nicht eingerichtet",
                 "Es gibt keinen Nutzer, bitte richten Sie einen Administrator-Nutzer ein").showAndWait();
 
-        createNewAccountController();
+        createInitialUserCreationDialog();
 
-
-    }
-
-    /**
-     * sets the stage of the controller
-     * mostly used by external classes
-     */
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
-    private void createNewAccountController() throws IOException {
-        FXMLLoader loader = new FXMLLoader(
-                Main.class.getResource("/NewUserAccountView.fxml")
-        );
-        AnchorPane pane = loader.load();
-
-        Scene scene = new Scene(pane);
-        Stage stage = new Stage();
-        stage.setTitle("NHPlus - Nutzer erstellen");
-
-        NewUserAccountController controller = loader.getController();
-        controller.initialize(stage);
-
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.show();
-
-        stage.setOnCloseRequest(event -> stage.close());
     }
 
     public void handleLogin() {
@@ -112,7 +74,7 @@ public class LoginController {
             return;
         }
 
-        if (!user.getPassword().equals(password)) {
+        if ( user == null || !user.getPassword().equals(password)) {
             // executes alarm if password is wrong
             alert.show();
             return;
@@ -122,37 +84,123 @@ public class LoginController {
         UserSession userSession = UserSession.getInstance();
         userSession.init(user);
 
-        openMainWindow();
+        clearFields();
+
+        ControllerManager.getInstance().getMainStage().show();
+        stage.close();
     }
 
+    private void clearFields() {
+        this.username.setText("");
+        this.password.setText("");
+    }
 
+    /**
+     * creates little dialog for the creation of an admin user
+     */
+    private void createInitialUserCreationDialog() {
+            Dialog<User> dialog = new Dialog<>();
+            dialog.setTitle("NHPlus - Einrichtung");
+            dialog.setHeaderText("Admin-Nutzer Erstellung");
+            dialog.setHeight(400);
+            dialog.setWidth(200);
+            dialog.setResizable(false);
 
-    private void openMainWindow() {
-        try {
-            FXMLLoader loader = new FXMLLoader(
-                    Main.class.getResource("/MainWindowView.fxml")
-            );
-            BorderPane pane = loader.load();
+            Label userNameLabel = new Label("Nutzername: ");
+            TextField userNameField = new TextField();
 
-            Scene scene = new Scene(pane);
-            Stage mainWindowStage = new Stage();
+            Label passwordLabel = new Label("Passwort: ");
+            TextField passwordField = new PasswordField();
 
-            MainWindowController controller = loader.getController();
-            controller.setStage(mainWindowStage);
-            controller.setLoginStage(this.stage);
+            Label firstNameLabel = new Label("Vorname: ");
+            TextField firstNameField = new TextField();
 
-            mainWindowStage.setTitle("NHPlus");
-            mainWindowStage.setScene(scene);
-            mainWindowStage.setResizable(false);
-            mainWindowStage.show();
+            Label lastNameLabel = new Label("Nachname: ");
+            TextField lastNameField = new TextField();
 
-            mainWindowStage.setOnCloseRequest(event -> {
-                ConnectionBuilder.closeConnection();
-                Platform.exit();
-                System.exit(0);
+            GridPane grid = new GridPane();
+
+            grid.add(userNameLabel, 1, 1);
+            grid.add(userNameField, 2, 1);
+
+            grid.add(passwordLabel, 1, 2);
+            grid.add(passwordField, 2, 2);
+
+            grid.add(firstNameLabel, 1, 3);
+            grid.add(firstNameField, 2, 3);
+
+            grid.add(lastNameLabel, 1, 4);
+            grid.add(lastNameField, 2, 4);
+
+            grid.setVgap(5);
+
+            dialog.getDialogPane().setContent(grid);
+
+            ButtonType createButton = new ButtonType("Erstellen", ButtonBar.ButtonData.OK_DONE);
+            ButtonType cancelButton = new ButtonType("Abbrechen", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+            dialog.getDialogPane().getButtonTypes().add(createButton);
+            dialog.getDialogPane().getButtonTypes().add(cancelButton);
+
+            dialog.setResultConverter(buttonType -> {
+                switch (buttonType.getButtonData()) {
+                    case OK_DONE:
+                        return new User(
+                                userNameField.getText(),
+                                passwordField.getText(),
+                                firstNameField.getText(),
+                                lastNameField.getText(),
+                                Group.ADMIN
+                        );
+                    case CANCEL_CLOSE:
+                        // not using a break to use default as fallback
+                        ConnectionBuilder.closeConnection();
+                        Platform.exit();
+                        System.exit(0);
+                    default:
+                        // if any other button type is pressed, should not happen because there are only
+                        // two buttons
+                        return null;
+                }
             });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+            Optional<User> user = dialog.showAndWait();
+
+            if (user.isPresent()) {
+                dialog.close();
+                try {
+                    dao.create(user.get());
+                } catch (SQLException e) {
+                    AlertCreator.createError("Anwendungsfehler", "Es ist ein Fehler beim Erstellen" +
+                            "des Nutzers aufgetreten. Bitte überprüfen Sie die Datenbank. Die Anwendung wird jetzt " +
+                            "geschlossen.");
+                    ConnectionBuilder.closeConnection();
+                    Platform.exit();
+                    System.exit(0);
+                }
+            }
+    }
+
+    @Override
+    public String getWindowTitle() {
+        return "Login";
+    }
+
+    @Override
+    public boolean isClosingAppOnX() {
+        return true;
+    }
+
+    @Override
+    public String getFxmlPath() {
+        return "/LoginView.fxml";
+    }
+
+    /**
+     * returns null, because this class doesn't need any permissions
+     */
+    @Override
+    public Group[] getPermittedGroups() {
+        return null;
     }
 }

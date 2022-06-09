@@ -1,7 +1,12 @@
 package controller;
 
+import datastorage.ConnectionBuilder;
 import datastorage.UserSession;
 import enums.Group;
+import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 import utils.AlertCreator;
 
@@ -35,10 +40,32 @@ public abstract class Controller {
      */
     public Stage create() {
         try {
-            stage = loadViewAndCreateStage();
+            stage = new Stage();
+
+            FXMLLoader loader = new FXMLLoader(
+                    Main.class.getResource(getFxmlPath())
+            );
+
+            loader.setController(this);
+
+            Parent root = loader.load();
+
+            Scene scene = new Scene(root);
+
+            stage.setScene(scene);
+            stage.setResizable(false);
             stage.setTitle(getWindowTitle() != null && getWindowTitle().length() > 0 ?
                     "NHPlus - " + getWindowTitle() : "NHPlus"
             );
+
+            if (isClosingAppOnX()) {
+                stage.setOnCloseRequest(event -> {
+                    ConnectionBuilder.closeConnection();
+                    Platform.exit();
+                    System.exit(0);
+                });
+            }
+
             return stage;
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -46,31 +73,6 @@ public abstract class Controller {
                     "ein Fehler aufgetreten.");
             return null;
         }
-    }
-
-    /**
-     * opens controller, and initializes it if it's not already initialized
-     *
-     * @param controller the controller to open
-     * @return the stage of the controller
-     */
-    protected Stage openController(Controller controller) {
-        Stage stage;
-
-        // checks if controller already exists, if so get it, else create it
-        if (controller.getStage() == null) {
-            stage = controller.create();
-        } else {
-            stage = controller.getStage();
-        }
-
-        // returns if stage == null which happens when user has no permissions
-        // just a fallback option in this case because only admins can use the AllUserController
-        if (stage == null) return null;
-
-        // show the stage and return it
-        stage.show();
-        return stage;
     }
 
     /**
@@ -87,13 +89,9 @@ public abstract class Controller {
      * creates alert when the user has no permissions
      */
     private void createNoPermissionAlert() {
-        AlertCreator.createError("Keine Rechte", "Du hast keine Rechte um diese Aktion auszuführen");
+        AlertCreator.createError("Keine Rechte", "Du hast keine Rechte um diese Aktion auszuführen")
+                .show();
     }
-
-    /**
-     * abstract method for the logic of the view loading and stage creation
-     */
-    protected abstract Stage loadViewAndCreateStage() throws IOException;
 
     /**
      * default javafx initialize class
@@ -104,6 +102,16 @@ public abstract class Controller {
      * method to set window title to NHPlus - <code>TEXT</code>, if left empty, the window title will be set to NHPlus
      */
     public abstract String getWindowTitle();
+
+    /**
+     * overrideable method to define if the app should close on pressing x
+     */
+    public abstract boolean isClosingAppOnX();
+
+    /**
+     * overrideable method to define the fxml path
+     */
+    public abstract String getFxmlPath();
 
     /**
      * the permitted groups for the view and controller

@@ -48,6 +48,7 @@ public class MainWindowController extends Controller {
 
     @FXML
     private void handleLogout() {
+        mainBorderPane.setCenter(null);
         UserSession.getInstance().clear();
         ControllerManager.getInstance().getLoginStage().show();
         stage.close();

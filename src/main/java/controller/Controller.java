@@ -15,6 +15,9 @@ import java.util.Arrays;
 
 /**
  * abstract class for the controller and permission managment
+ *
+ * please keep in mind, that the Controller is connected to the View programmatically {@link #create()},
+ * adding your controller to your View-FXML will end in a total disaster.
  */
 public abstract class Controller {
     protected Stage stage;

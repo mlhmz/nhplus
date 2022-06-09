@@ -2,17 +2,20 @@ package controller;
 
 import datastorage.DAOFactory;
 import datastorage.UserDAO;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import enums.Group;
 import model.User;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
-public class NewUserAccountController {
+public class NewUserAccountController extends Controller {
     @FXML
     public TextField username;
 
@@ -31,16 +34,25 @@ public class NewUserAccountController {
     @FXML
     public Button btnCancel;
 
-    private final UserDAO dao;
+    @FXML
+    public ComboBox<Group> groupComboBox;
 
-    private Stage stage;
+    private final UserDAO dao;
 
     public NewUserAccountController() {
         dao = DAOFactory.getDAOFactory().createUserDAO();
     }
 
-    public void initialize(Stage stage) {
-        this.stage = stage;
+    /**
+     * initialize-method that is executed automatically by the controller
+     */
+    @Override
+    public void initialize() {
+        fillComboBox();
+    }
+
+    private void fillComboBox() {
+        groupComboBox.setItems(FXCollections.observableArrayList(Group.values()));
     }
 
     public void handleCreate() {
@@ -49,8 +61,9 @@ public class NewUserAccountController {
         String password = this.password.getText();
         String firstName = this.firstName.getText();
         String lastName = this.lastName.getText();
+        Group group = this.groupComboBox.getValue();
 
-        User user = new User(username, password, firstName, lastName);
+        User user = new User(username, password, firstName, lastName, group);
 
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Fehler beim Erstellen");
@@ -63,10 +76,41 @@ public class NewUserAccountController {
             return;
         }
 
+        clearFields();
+
         stage.close();
     }
 
     public void handleCancel() {
         stage.close();
+    }
+
+    private void clearFields() {
+        this.username.setText("");
+        this.password.setText("");
+        this.firstName.setText("");
+        this.lastName.setText("");
+    }
+
+    @Override
+    public String getWindowTitle() {
+        return "Nutzer erstellen";
+    }
+
+    @Override
+    public boolean isClosingAppOnX() {
+        return false;
+    }
+
+    @Override
+    public String getFxmlPath() {
+        return "/NewUserAccountView.fxml";
+    }
+
+    @Override
+    public Group[] getPermittedGroups() {
+        return new Group[]{
+            Group.ADMIN
+        };
     }
 }

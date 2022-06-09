@@ -2,6 +2,7 @@ package controller;
 
 import datastorage.PatientDAO;
 import datastorage.TreatmentDAO;
+import enums.Group;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -19,7 +20,7 @@ import java.util.List;
 /**
  * The <code>AllPatientController</code> contains the entire logic of the patient view. It determines which data is displayed and how to react to events.
  */
-public class AllPatientController {
+public class AllPatientController extends Controller {
     @FXML
     private TableView<Patient> tableView;
     @FXML
@@ -208,4 +209,25 @@ public class AllPatientController {
         this.txtCarelevel.clear();
         this.txtRoom.clear();
     }
+
+    @Override
+    public String getWindowTitle() {
+        return "Patienten";
+    }
+
+    @Override
+    public boolean isClosingAppOnX() {
+        return false;
+    }
+
+    @Override
+    public String getFxmlPath() {
+        return "/AllPatientView.fxml";
+    }
+
+    @Override
+    public Group[] getPermittedGroups() {
+        return Group.values();
+    }
+
 }

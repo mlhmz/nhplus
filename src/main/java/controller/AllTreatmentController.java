@@ -2,6 +2,7 @@ package controller;
 
 import datastorage.PatientDAO;
 import datastorage.TreatmentDAO;
+import enums.Group;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -19,7 +20,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AllTreatmentController {
+public class AllTreatmentController extends Controller {
     @FXML
     private TableView<Treatment> tableView;
     @FXML
@@ -40,6 +41,8 @@ public class AllTreatmentController {
     private Button btnNewTreatment;
     @FXML
     private Button btnDelete;
+
+    private Controller newTreatmentController, treatmentController;
 
     private ObservableList<Treatment> tableviewContent =
             FXCollections.observableArrayList();
@@ -173,42 +176,41 @@ public class AllTreatmentController {
     }
 
     public void newTreatmentWindow(Patient patient){
-        try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/NewTreatmentView.fxml"));
-            AnchorPane pane = loader.load();
-            Scene scene = new Scene(pane);
-            //da die primaryStage noch im Hintergrund bleiben soll
-            Stage stage = new Stage();
-
-            NewTreatmentController controller = loader.getController();
-            controller.initialize(this, stage, patient);
-
-            stage.setScene(scene);
-            stage.setResizable(false);
-            stage.showAndWait();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        if (newTreatmentController == null) {
+            newTreatmentController = new NewTreatmentController();
         }
+        Stage stage = newTreatmentController.getStage();
+        // in order to grab a class specific method, we need to cast the Controller to the NewTreatmentController
+        ((NewTreatmentController) newTreatmentController).initialize(this, patient);
+        stage.showAndWait();
     }
 
     public void treatmentWindow(Treatment treatment){
-        try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/TreatmentView.fxml"));
-            AnchorPane pane = loader.load();
-            Scene scene = new Scene(pane);
-            //da die primaryStage noch im Hintergrund bleiben soll
-            Stage stage = new Stage();
-            TreatmentController controller = loader.getController();
-
-            controller.initializeController(this, stage, treatment);
-
-            stage.setScene(scene);
-            stage.setResizable(false);
-            stage.showAndWait();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        if (treatmentController == null) {
+            treatmentController = new TreatmentController();
         }
+        Stage stage = treatmentController.getStage();
+        ((TreatmentController) treatmentController).initializeController(this, treatment);
+        stage.showAndWait();
+    }
+
+    @Override
+    public String getWindowTitle() {
+        return "Behandlungen";
+    }
+
+    @Override
+    public boolean isClosingAppOnX() {
+        return false;
+    }
+
+    @Override
+    public String getFxmlPath() {
+        return "/AllTreatmentView.fxml";
+    }
+
+    @Override
+    public Group[] getPermittedGroups() {
+        return Group.values();
     }
 }

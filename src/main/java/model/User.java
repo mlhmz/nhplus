@@ -1,5 +1,7 @@
 package model;
 
+import enums.Group;
+
 /**
  * A user to log in, log out and manage the Data in the Application
  */
@@ -9,23 +11,26 @@ public class User {
     private String firstName;
     private String username;
     private String password;
+    private Group group;
 
     public User() {
     }
 
-    public User(String username, String password, String firstName, String lastName) {
+    public User(String username, String password, String firstName, String lastName, Group group) {
         this.lastName = lastName;
         this.firstName = firstName;
         this.username = username;
         this.password = password;
+        this.group = group;
     }
 
-    public User(Long uid, String lastName, String firstName, String username, String password) {
+    public User(Long uid, String lastName, String firstName, String username, String password, Group group) {
         this.uid = uid;
         this.lastName = lastName;
         this.firstName = firstName;
         this.username = username;
         this.password = password;
+        this.group = group;
     }
 
     public Long getUid() {
@@ -66,6 +71,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
     /**

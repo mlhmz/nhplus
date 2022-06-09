@@ -1,5 +1,6 @@
 package datastorage;
 
+import enums.Group;
 import model.User;
 
 /**
@@ -11,13 +12,21 @@ public final class UserSession {
 
     private User user;
 
-    public static UserSession getInstance() {
+    /**
+     * static getInstance()-Method to get the Singleton Object
+     * for a thread-safe behaviour, the method is synchronized
+     */
+    public synchronized static UserSession getInstance() {
         if (instance == null) {
             instance = new UserSession();
         }
         return instance;
     }
 
+    /**
+     * initialization of the session singleton,
+     * sets the user
+     */
     public void init(User user) {
         this.user = user;
     }
@@ -47,4 +56,6 @@ public final class UserSession {
     public String getLastName() {
         return user.getLastName();
     }
+
+    public Group getGroup() { return user.getGroup(); }
 }

@@ -1,5 +1,6 @@
 package datastorage;
 
+import enums.Group;
 import model.User;
 
 import java.sql.*;
@@ -17,7 +18,7 @@ public class UserDAO extends DAOimp<User> {
     protected PreparedStatement getCreateStatement(User user) throws SQLException {
         PreparedStatement statement = getPreparedStatement(
                 String.format("INSERT INTO %s ", USERS_TABLE_NAME) +
-                "(lastName, firstName, username, password) VALUES (?, ?, ?, ?)");
+                "(lastName, firstName, username, password, userGroup) VALUES (?, ?, ?, ?, ?)");
         fillPreparedStatement(user, statement);
         return statement;
     }
@@ -53,7 +54,7 @@ public class UserDAO extends DAOimp<User> {
     protected User getInstanceFromResultSet(ResultSet set) throws SQLException {
         return new User(set.getLong("uid"), set.getString("lastName"),
                 set.getString("firstName"), set.getString("username"),
-                set.getString("password"));
+                set.getString("password"), Group.valueOf(set.getString("userGroup")));
     }
 
     @Override
@@ -67,7 +68,7 @@ public class UserDAO extends DAOimp<User> {
         while (set.next()) {
             users.add(new User(set.getLong("uid"), set.getString("lastName"),
                     set.getString("firstName"), set.getString("username"),
-                    set.getString("password")));
+                    set.getString("password"), Group.valueOf(set.getString("userGroup"))));
         }
         return users;
     }
@@ -76,7 +77,7 @@ public class UserDAO extends DAOimp<User> {
     protected PreparedStatement getUpdateStatement(User user) throws SQLException {
         PreparedStatement preparedStatement = getPreparedStatement(
                 String.format("UPDATE %s SET ", USERS_TABLE_NAME) +
-                "lastName = ?, firstName = ?, username = ?, password = ? WHERE uid = ?,");
+                "lastName = ?, firstName = ?, username = ?, password = ?, userGroup = ? WHERE uid = ?;");
         fillPreparedStatement(user, preparedStatement);
         preparedStatement.setLong(5, user.getUid());
         return preparedStatement;
@@ -95,5 +96,6 @@ public class UserDAO extends DAOimp<User> {
         statement.setString(2, user.getFirstName());
         statement.setString(3, user.getUsername());
         statement.setString(4, user.getPassword());
+        statement.setString(5, user.getGroup().name());
     }
 }

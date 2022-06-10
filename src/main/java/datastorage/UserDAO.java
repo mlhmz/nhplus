@@ -79,7 +79,7 @@ public class UserDAO extends DAOimp<User> {
                 String.format("UPDATE %s SET ", USERS_TABLE_NAME) +
                 "lastName = ?, firstName = ?, username = ?, password = ?, userGroup = ? WHERE uid = ?;");
         fillPreparedStatement(user, preparedStatement);
-        preparedStatement.setLong(5, user.getUid());
+        preparedStatement.setLong(6, user.getUid());
         return preparedStatement;
     }
 

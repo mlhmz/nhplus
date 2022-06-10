@@ -4,8 +4,10 @@ import datastorage.DAOFactory;
 import datastorage.UserDAO;
 import enums.PermissionKey;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.util.Callback;
 import model.Group;
 import model.GroupFactory;
 import model.User;
@@ -45,14 +47,33 @@ public class NewUserAccountController extends Controller {
      */
     @Override
     public void initialize() {
-        fillComboBox();
-    }
+        Callback<ListView<Group>, ListCell<Group>> cellFactory = buildCallback();
 
-    private void fillComboBox() {
+        groupComboBox.setButtonCell(cellFactory.call(null));
+        groupComboBox.setCellFactory(cellFactory);
+
         groupComboBox.setItems(FXCollections.observableArrayList(GroupFactory.getInstance().getAllGroups()));
     }
 
-    public void handleCreate() {
+    /**
+     * the combobox needs a callback in order to show the group objects right
+     */
+    private Callback<ListView<Group>, ListCell<Group>> buildCallback() {
+        return groupListView -> new ListCell<Group>() {
+                    @Override
+                    protected void updateItem(Group group, boolean empty) {
+                        super.updateItem(group, empty);
+                        if (group == null || empty) {
+                            setGraphic(null);
+                        } else {
+                            setText(group.getGuiRepresentation());
+                        }
+                    }
+                };
+    }
+
+    @FXML
+    public void handleCreate(ActionEvent e) {
         // obtains data from gui fields
         String username = this.username.getText();
         String password = this.password.getText();
@@ -67,7 +88,7 @@ public class NewUserAccountController extends Controller {
 
         try {
             dao.create(user);
-        } catch (SQLException e) {
+        } catch (SQLException ex) {
             alert.setHeaderText("Etwas ist schiefgelaufen...");
             alert.setContentText("Beim Erstellen des Nutzers ist ein Fehler aufgetreten");
             return;
@@ -78,7 +99,8 @@ public class NewUserAccountController extends Controller {
         stage.close();
     }
 
-    public void handleCancel() {
+    @FXML
+    public void handleCancel(ActionEvent e) {
         stage.close();
     }
 

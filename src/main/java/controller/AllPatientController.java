@@ -2,7 +2,7 @@ package controller;
 
 import datastorage.PatientDAO;
 import datastorage.TreatmentDAO;
-import enums.Group;
+import enums.PermissionKey;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -226,8 +226,8 @@ public class AllPatientController extends Controller {
     }
 
     @Override
-    public Group[] getPermittedGroups() {
-        return Group.values();
+    public PermissionKey getPermissionKey() {
+        return PermissionKey.SHOW_ALL_PATIENTS;
     }
 
 }

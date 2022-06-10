@@ -2,7 +2,7 @@ package controller;
 
 import datastorage.ConnectionBuilder;
 import datastorage.UserSession;
-import enums.Group;
+import enums.PermissionKey;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -84,8 +84,8 @@ public abstract class Controller {
      */
     public boolean userIsPermitted() {
         // if permitted groups is null, there are no permissions required for the controller
-        if (getPermittedGroups() == null) return true;
-        return Arrays.stream(getPermittedGroups()).anyMatch(group -> group.equals(UserSession.getInstance().getGroup()));
+        if (getPermissionKey() == null) return true;
+        return Arrays.asList(UserSession.getInstance().getGroup().getPermissions()).contains(getPermissionKey());
     }
 
     /**
@@ -120,5 +120,5 @@ public abstract class Controller {
      * the permitted groups for the view and controller
      * return null if no permissions are required for a controller
      */
-    public abstract Group[] getPermittedGroups();
+    public abstract PermissionKey getPermissionKey();
 }

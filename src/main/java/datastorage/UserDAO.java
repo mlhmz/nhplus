@@ -1,6 +1,6 @@
 package datastorage;
 
-import enums.Group;
+import model.GroupFactory;
 import model.User;
 
 import java.sql.*;
@@ -54,7 +54,7 @@ public class UserDAO extends DAOimp<User> {
     protected User getInstanceFromResultSet(ResultSet set) throws SQLException {
         return new User(set.getLong("uid"), set.getString("lastName"),
                 set.getString("firstName"), set.getString("username"),
-                set.getString("password"), Group.valueOf(set.getString("userGroup")));
+                set.getString("password"), GroupFactory.getInstance().getGroup(set.getString("userGroup")));
     }
 
     @Override
@@ -68,7 +68,7 @@ public class UserDAO extends DAOimp<User> {
         while (set.next()) {
             users.add(new User(set.getLong("uid"), set.getString("lastName"),
                     set.getString("firstName"), set.getString("username"),
-                    set.getString("password"), Group.valueOf(set.getString("userGroup"))));
+                    set.getString("password"), GroupFactory.getInstance().getGroup(set.getString("userGroup"))));
         }
         return users;
     }
@@ -96,6 +96,6 @@ public class UserDAO extends DAOimp<User> {
         statement.setString(2, user.getFirstName());
         statement.setString(3, user.getUsername());
         statement.setString(4, user.getPassword());
-        statement.setString(5, user.getGroup().name());
+        statement.setString(5, user.getGroup().getIdentifier());
     }
 }

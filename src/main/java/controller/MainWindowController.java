@@ -1,7 +1,7 @@
 package controller;
 
 import datastorage.UserSession;
-import enums.Group;
+import enums.PermissionKey;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
@@ -71,8 +71,7 @@ public class MainWindowController extends Controller {
     }
 
     @Override
-    public Group[] getPermittedGroups() {
-        // all groups are permitted to use this controller with Group#values()
-        return Group.values();
+    public PermissionKey getPermissionKey() {
+        return PermissionKey.SHOW_HOMEPAGE;
     }
 }

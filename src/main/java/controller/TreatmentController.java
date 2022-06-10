@@ -3,10 +3,9 @@ package controller;
 import datastorage.DAOFactory;
 import datastorage.PatientDAO;
 import datastorage.TreatmentDAO;
-import enums.Group;
+import enums.PermissionKey;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
 import model.Patient;
 import model.Treatment;
 import utils.DateConverter;
@@ -108,7 +107,7 @@ public class TreatmentController extends Controller {
     }
 
     @Override
-    public Group[] getPermittedGroups() {
-        return Group.values();
+    public PermissionKey getPermissionKey() {
+        return PermissionKey.EDIT_TREATMENT;
     }
 }

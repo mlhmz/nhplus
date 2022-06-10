@@ -2,17 +2,14 @@ package controller;
 
 import datastorage.DAOFactory;
 import datastorage.UserDAO;
+import enums.PermissionKey;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-import enums.Group;
+import model.Group;
+import model.GroupFactory;
 import model.User;
 
-import java.io.IOException;
 import java.sql.SQLException;
 
 public class NewUserAccountController extends Controller {
@@ -52,7 +49,7 @@ public class NewUserAccountController extends Controller {
     }
 
     private void fillComboBox() {
-        groupComboBox.setItems(FXCollections.observableArrayList(Group.values()));
+        groupComboBox.setItems(FXCollections.observableArrayList(GroupFactory.getInstance().getAllGroups()));
     }
 
     public void handleCreate() {
@@ -108,9 +105,7 @@ public class NewUserAccountController extends Controller {
     }
 
     @Override
-    public Group[] getPermittedGroups() {
-        return new Group[]{
-            Group.ADMIN
-        };
+    public PermissionKey getPermissionKey() {
+        return PermissionKey.CREATE_USER;
     }
 }

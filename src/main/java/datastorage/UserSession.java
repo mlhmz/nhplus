@@ -1,6 +1,6 @@
 package datastorage;
 
-import enums.Group;
+import model.Group;
 import model.User;
 
 /**

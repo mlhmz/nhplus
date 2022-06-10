@@ -5,11 +5,12 @@ import datastorage.ConnectionBuilder;
 import datastorage.DAOFactory;
 import datastorage.UserDAO;
 import datastorage.UserSession;
-import enums.Group;
+import enums.PermissionKey;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import model.GroupFactory;
 import model.User;
 import utils.AlertCreator;
 
@@ -150,7 +151,7 @@ public class LoginController extends Controller {
                                 passwordField.getText(),
                                 firstNameField.getText(),
                                 lastNameField.getText(),
-                                Group.ADMIN
+                                GroupFactory.getInstance().getGroup("admin")
                         );
                     case CANCEL_CLOSE:
                         // not using a break to use default as fallback
@@ -200,7 +201,7 @@ public class LoginController extends Controller {
      * returns null, because this class doesn't need any permissions
      */
     @Override
-    public Group[] getPermittedGroups() {
+    public PermissionKey getPermissionKey() {
         return null;
     }
 }

@@ -1,7 +1,5 @@
 package model;
 
-import enums.Group;
-
 /**
  * A user to log in, log out and manage the Data in the Application
  */

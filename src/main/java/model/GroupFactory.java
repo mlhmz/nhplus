@@ -10,7 +10,7 @@ import model.groups.CaregiverGroup;
 public class GroupFactory {
     private static GroupFactory instance;
 
-    // groups are final because they only get instanced once
+    // groups are final because they only get instantiated once
     private final Group adminGroup, caregiverGroup, accountantGroup;
 
     private GroupFactory() {
@@ -20,7 +20,7 @@ public class GroupFactory {
     }
 
     /**
-     * instances GroupFactory and all Groups that exist
+     * instantiates GroupFactory and all Groups that exist
      */
     public static GroupFactory getInstance() {
         if (instance == null) {

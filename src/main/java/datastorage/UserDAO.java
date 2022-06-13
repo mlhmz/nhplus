@@ -7,6 +7,9 @@ import utils.PasswordHashUtil;
 import java.sql.*;
 import java.util.ArrayList;
 
+/**
+ * Implements the {@link DAOimp} interface and overwrites the methods to create PreparedStatements
+ */
 public class UserDAO extends DAOimp<User> {
 
     public static final String USERS_TABLE_NAME = "users";

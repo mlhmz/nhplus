@@ -1,5 +1,8 @@
 package enums;
 
+/**
+ * Enum for Group Permissions
+ */
 public enum PermissionKey {
     SHOW_HOMEPAGE,
     SHOW_ALL_PATIENTS,

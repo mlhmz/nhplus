@@ -25,6 +25,9 @@ public class MainWindowController extends Controller {
 
     private Controller allPatientController, allTreatmentController, allUsersController;
 
+    /**
+     * intializes the stage
+     */
     public void initialize() {
         setUserSessionLabel();
 
@@ -34,7 +37,7 @@ public class MainWindowController extends Controller {
     }
 
     /**
-     *
+     * gets the stage and adjusts the button to the permissions of the user
      */
     @Override
     public Stage getStage() {
@@ -62,21 +65,34 @@ public class MainWindowController extends Controller {
         userSessionText.setText(userLabel);
     }
 
+    /**
+     * shows all patients by pressing the Patient Button
+     */
     @FXML
     private void handleShowAllPatient(ActionEvent e) {
         mainBorderPane.setCenter(allPatientController.getStage().getScene().getRoot());
     }
 
+    /**
+     * shows all treatments by pressing the Treatment Button
+     */
     @FXML
     private void handleShowAllTreatments(ActionEvent e) {
         mainBorderPane.setCenter(allTreatmentController.getStage().getScene().getRoot());
     }
 
+    /**
+     * shows all users by pressing the Users Button
+     */
     @FXML
     private void handleShowAllUsers(ActionEvent e) {
         mainBorderPane.setCenter(allUsersController.getStage().getScene().getRoot());
     }
 
+    /**
+     * logs the user out, resets the scene, deletes the session, shows the login stage, closes the MainWindowStage
+     * triggered by the logout button
+     */
     @FXML
     private void handleLogout() {
         resetScene();

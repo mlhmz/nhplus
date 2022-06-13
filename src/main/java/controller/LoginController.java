@@ -60,6 +60,9 @@ public class LoginController extends Controller {
 
     }
 
+    /**
+     * handles the login button and validates the password hash
+     */
     public void handleLogin() {
         // obtains data from gui fields
         String username = this.username.getText();
@@ -101,6 +104,9 @@ public class LoginController extends Controller {
         stage.close();
     }
 
+    /**
+     * clears the fields after the login is done
+     */
     private void clearFields() {
         this.username.setText("");
         this.password.setText("");

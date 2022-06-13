@@ -48,6 +48,9 @@ public class AllUserController extends Controller {
 
     private final NewUserAccountController newUserAccountController = new NewUserAccountController();
 
+    /**
+     * initializes the view, mainly the table
+     */
     @Override
     public void initialize() {
         readAllDataAndShowInTableView();

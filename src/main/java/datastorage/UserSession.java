@@ -4,7 +4,7 @@ import model.Group;
 import model.User;
 
 /**
- * Singleton for <code>User</code> in order to keep the logged-in user stored
+ * Singleton for {@link User} in order to keep the logged-in user stored
  */
 public final class UserSession {
 

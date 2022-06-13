@@ -13,11 +13,15 @@ import javafx.scene.layout.GridPane;
 import model.GroupFactory;
 import model.User;
 import utils.AlertCreator;
+import utils.PasswordHashUtil;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * logic of the login process
+ */
 public class LoginController extends Controller {
     @FXML
     TextField username;
@@ -33,6 +37,7 @@ public class LoginController extends Controller {
         dao = DAOFactory.getDAOFactory().createUserDAO();
     }
 
+    @Override
     public void initialize() {
         List<User> users = null;
 
@@ -75,7 +80,12 @@ public class LoginController extends Controller {
             return;
         }
 
-        if ( user == null || !user.getPassword().equals(password)) {
+        if (user == null) {
+            return;
+        }
+
+        boolean validPassword = PasswordHashUtil.isValidPassword(password, user.getPassword());
+        if (!validPassword) {
             // executes alarm if password is wrong
             alert.show();
             return;
@@ -151,7 +161,7 @@ public class LoginController extends Controller {
                                 passwordField.getText(),
                                 firstNameField.getText(),
                                 lastNameField.getText(),
-                                GroupFactory.getInstance().getGroup("admin")
+                                GroupFactory.getInstance().getGroup("ADMIN")
                         );
                     case CANCEL_CLOSE:
                         // not using a break to use default as fallback

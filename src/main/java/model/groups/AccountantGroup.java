@@ -3,6 +3,9 @@ package model.groups;
 import enums.PermissionKey;
 import model.Group;
 
+/**
+ * the accountant group, it has permissions to read about the patients and their treatments
+ */
 public class AccountantGroup implements Group {
     @Override
     public String getIdentifier() {

@@ -2,6 +2,7 @@ package datastorage;
 
 import model.GroupFactory;
 import model.User;
+import utils.PasswordHashUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -91,11 +92,18 @@ public class UserDAO extends DAOimp<User> {
         return preparedStatement;
     }
 
+    /**
+     * Fills the PreparedStatement and Hashes Password
+     *
+     * @param user user to fill into statement and validate password of
+     * @param statement statement to fill
+     * @throws SQLException throws if the a setString() Method of the Statement is out of index
+     */
     private void fillPreparedStatement(User user, PreparedStatement statement) throws SQLException {
         statement.setString(1, user.getLastName());
         statement.setString(2, user.getFirstName());
         statement.setString(3, user.getUsername());
-        statement.setString(4, user.getPassword());
+        statement.setString(4, PasswordHashUtil.hashPassword(user.getPassword()));
         statement.setString(5, user.getGroup().getIdentifier());
     }
 }

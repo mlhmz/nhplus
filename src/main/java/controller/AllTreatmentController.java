@@ -134,6 +134,10 @@ public class AllTreatmentController extends Controller {
 
     @FXML
     public void handleDelete(){
+        if (!isPermittedUserToSpecificOperation(PermissionKey.DELETE_TREATMENT)) {
+            createNoPermissionAlert();
+            return;
+        }
         int index = this.tableView.getSelectionModel().getSelectedIndex();
         Treatment t = this.tableviewContent.remove(index);
         TreatmentDAO dao = DAOFactory.getDAOFactory().createTreatmentDAO();
@@ -150,8 +154,7 @@ public class AllTreatmentController extends Controller {
             String p = this.comboBox.getSelectionModel().getSelectedItem();
             Patient patient = searchInList(p);
             newTreatmentWindow(patient);
-        }
-        catch(NullPointerException e){
+        } catch(NullPointerException e){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Information");
             alert.setHeaderText("Patient für die Behandlung fehlt!");
@@ -172,21 +175,32 @@ public class AllTreatmentController extends Controller {
         });
     }
 
-    public void newTreatmentWindow(Patient patient){
+    public void newTreatmentWindow(Patient patient) {
         if (newTreatmentController == null) {
             newTreatmentController = new NewTreatmentController();
         }
         Stage stage = newTreatmentController.getStage();
+
+        if (stage == null) {
+            return;
+        }
+
         // in order to grab a class specific method, we need to cast the Controller to the NewTreatmentController
         ((NewTreatmentController) newTreatmentController).initialize(this, patient);
         stage.showAndWait();
     }
 
-    public void treatmentWindow(Treatment treatment){
+    public void treatmentWindow(Treatment treatment) {
         if (treatmentController == null) {
             treatmentController = new TreatmentController();
         }
+
         Stage stage = treatmentController.getStage();
+
+        if (stage == null) {
+            return;
+        }
+
         ((TreatmentController) treatmentController).initializeController(this, treatment);
         stage.showAndWait();
     }

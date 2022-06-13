@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS treatments (
 CREATE TABLE IF NOT EXISTS users (
     uid INT IDENTITY PRIMARY KEY,
     firstname VARCHAR(60),
-    lastname VARCHAR(60),
+    surname VARCHAR(60),
     username VARCHAR(30) UNIQUE,
     password VARCHAR(255),
     userGroup VARCHAR(30)

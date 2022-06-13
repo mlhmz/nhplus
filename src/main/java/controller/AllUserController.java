@@ -22,7 +22,8 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Contains logic of the User-View
+ * Logical Layer of the AllUserView
+ * Contains Button-Events and fills Tables
  */
 public class AllUserController extends Controller {
     @FXML
@@ -30,7 +31,7 @@ public class AllUserController extends Controller {
     @FXML
     public TableColumn<User, Long> colID;
     @FXML
-    public TableColumn<User, String> colLastName;
+    public TableColumn<User, String> colSurname;
     @FXML
     public TableColumn<User, String> colFirstName;
     @FXML
@@ -58,8 +59,8 @@ public class AllUserController extends Controller {
 
         this.colID.setCellValueFactory(new PropertyValueFactory<>("uid"));
 
-        this.colLastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-        this.colLastName.setCellFactory(TextFieldTableCell.forTableColumn());
+        this.colSurname.setCellValueFactory(new PropertyValueFactory<>("surname"));
+        this.colSurname.setCellFactory(TextFieldTableCell.forTableColumn());
 
         this.colFirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         this.colFirstName.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -106,6 +107,10 @@ public class AllUserController extends Controller {
      */
     @FXML
     public void handleDelete() {
+        if (!isPermittedUserToSpecificOperation(PermissionKey.DELETE_USER)) {
+            return;
+        }
+
         if (this.tableView.getSelectionModel().getSelectedItem() == null) {
             AlertCreator.createWarning("Es ist kein Nutzer ausgewählt!", "Bitte wählen Sie einen " +
                     "Nutzer aus.");
@@ -153,8 +158,8 @@ public class AllUserController extends Controller {
      * handler to edit last name field
      */
     @FXML
-    public void handleOnEditLastName(TableColumn.CellEditEvent<User, String> event) {
-        event.getRowValue().setLastName(event.getNewValue());
+    public void handleOnEditSurname(TableColumn.CellEditEvent<User, String> event) {
+        event.getRowValue().setSurname(event.getNewValue());
         doUpdate(event);
         refreshTable();
     }

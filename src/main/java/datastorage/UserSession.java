@@ -53,8 +53,8 @@ public final class UserSession {
         return user.getFirstName();
     }
 
-    public String getLastName() {
-        return user.getLastName();
+    public String getSurname() {
+        return user.getSurname();
     }
 
     public Group getGroup() { return user.getGroup(); }

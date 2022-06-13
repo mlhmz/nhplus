@@ -44,23 +44,26 @@ public class MainWindowController extends Controller {
         Stage stage = super.getStage();
 
         // removes buttons for modules that the user has no permissions for
-        if (!allPatientController.userIsPermitted()) {
+        if (!allPatientController.isPermittedUser()) {
             vBox.getChildren().remove(patientsBtn);
         }
-        if (!allTreatmentController.userIsPermitted()) {
+        if (!allTreatmentController.isPermittedUser()) {
             vBox.getChildren().remove(treatmentsBtn);
         }
-        if (!allUsersController.userIsPermitted()) {
+        if (!allUsersController.isPermittedUser()) {
             vBox.getChildren().remove(usersBtn);
         }
 
         return stage;
     }
 
+    /**
+     * sets the user session label at the bottom of the screen
+     */
     private void setUserSessionLabel() {
         UserSession userSession = UserSession.getInstance();
         String userLabel =
-                userSession.getUsername() + " - " + userSession.getFirstName() + " " + userSession.getLastName();
+                userSession.getUsername() + " - " + userSession.getFirstName() + " " + userSession.getSurname();
 
         userSessionText.setText(userLabel);
     }

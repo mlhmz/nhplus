@@ -15,6 +15,10 @@ import utils.AlertCreator;
 
 import java.sql.SQLException;
 
+/**
+ * Logical Layer of the NewUserAccount View<br>
+ * Contains the Logic to create a new User Account and for ButtonEvents
+ */
 public class NewUserAccountController extends Controller {
     @FXML
     public TextField username;
@@ -26,7 +30,7 @@ public class NewUserAccountController extends Controller {
     public TextField firstName;
 
     @FXML
-    public TextField lastName;
+    public TextField surname;
 
     @FXML
     public Button btnCreate;
@@ -84,16 +88,17 @@ public class NewUserAccountController extends Controller {
         String username = this.username.getText();
         String password = this.password.getText();
         String firstName = this.firstName.getText();
-        String lastName = this.lastName.getText();
+        String surname = this.surname.getText();
         Group group = this.groupComboBox.getValue();
 
         try {
-            validateFields(username, password, firstName, lastName, group);
+            validateFields(username, password, firstName, surname, group);
         } catch (IllegalArgumentException ex) {
-            AlertCreator.createWarning("Fehler bei der Erstellung", ex.getMessage());
+            AlertCreator.createWarning("Fehler bei der Erstellung", ex.getMessage()).show();
+            return;
         }
 
-        User user = new User(username, password, firstName, lastName, group);
+        User user = new User(username, password, firstName, surname, group);
 
 
         try {
@@ -114,7 +119,7 @@ public class NewUserAccountController extends Controller {
      *
      * @throws IllegalArgumentException Exception with the Validation Error as Message
      */
-    private void validateFields(String username, String password, String firstName, String lastName, Group group)
+    private void validateFields(String username, String password, String firstName, String surname, Group group)
             throws IllegalArgumentException {
         if (username.isEmpty()) {
             throw new IllegalArgumentException("Der Nutzername ist leer.");
@@ -128,11 +133,10 @@ public class NewUserAccountController extends Controller {
         if (firstName.isEmpty()) {
             throw new IllegalArgumentException("Der Vorname ist leer.");
         }
-        if (lastName.isEmpty()) {
+        if (surname.isEmpty()) {
             throw new IllegalArgumentException("Der Nachname ist leer.");
         }
         if (group == null) {
-            // usually the group cant be empty, this is a fallback option
             throw new IllegalArgumentException("Die Gruppe ist leer.");
         }
     }
@@ -153,7 +157,7 @@ public class NewUserAccountController extends Controller {
         this.username.setText("");
         this.password.setText("");
         this.firstName.setText("");
-        this.lastName.setText("");
+        this.surname.setText("");
     }
 
     @Override

@@ -3,29 +3,22 @@ package model;
 /**
  * A user to log in, log out and manage the Data in the Application
  */
-public class User {
+public class User extends Person {
     private Long uid;
-    private String lastName;
-    private String firstName;
     private String username;
     private String password;
     private Group group;
 
-    public User() {
-    }
-
-    public User(String username, String password, String firstName, String lastName, Group group) {
-        this.lastName = lastName;
-        this.firstName = firstName;
+    public User(String username, String password, String firstName, String surname, Group group) {
+        super(firstName, surname);
         this.username = username;
         this.password = password;
         this.group = group;
     }
 
-    public User(Long uid, String lastName, String firstName, String username, String password, Group group) {
+    public User(Long uid, String surname, String firstName, String username, String password, Group group) {
+        super(firstName, surname);
         this.uid = uid;
-        this.lastName = lastName;
-        this.firstName = firstName;
         this.username = username;
         this.password = password;
         this.group = group;
@@ -37,22 +30,6 @@ public class User {
 
     public void setUid(Long uid) {
         this.uid = uid;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
     }
 
     public String getUsername() {
@@ -88,8 +65,8 @@ public class User {
     public String toString() {
         return "User{" +
                 "uid=" + uid +
-                ", lastName='" + lastName + '\'' +
-                ", firstName='" + firstName + '\'' +
+                ", lastName='" + getSurname() + '\'' +
+                ", firstName='" + getFirstName() + '\'' +
                 ", email='" + username + '\'' +
                 '}';
     }

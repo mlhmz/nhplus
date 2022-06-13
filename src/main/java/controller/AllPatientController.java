@@ -81,6 +81,10 @@ public class AllPatientController extends Controller {
 
         //Anzeigen der Daten
         this.tableView.setItems(this.tableviewContent);
+
+        if (!isPermittedUserToSpecificOperation(PermissionKey.EDIT_PATIENT)) {
+            this.tableView.setEditable(false);
+        }
     }
 
     /**
@@ -167,6 +171,11 @@ public class AllPatientController extends Controller {
      */
     @FXML
     public void handleDeleteRow() {
+        if (!isPermittedUserToSpecificOperation(PermissionKey.DELETE_PATIENT)) {
+            createNoPermissionAlert();
+            return;
+        }
+
         TreatmentDAO tDao = DAOFactory.getDAOFactory().createTreatmentDAO();
         Patient selectedItem = this.tableView.getSelectionModel().getSelectedItem();
         try {
@@ -183,6 +192,11 @@ public class AllPatientController extends Controller {
      */
     @FXML
     public void handleAdd() {
+        if (!isPermittedUserToSpecificOperation(PermissionKey.CREATE_PATIENT)) {
+            createNoPermissionAlert();
+            return;
+        }
+
         String surname = this.txtSurname.getText();
         String firstname = this.txtFirstname.getText();
         String birthday = this.txtBirthday.getText();

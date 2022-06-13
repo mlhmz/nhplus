@@ -14,8 +14,8 @@ import java.io.IOException;
 import java.util.Arrays;
 
 /**
- * abstract class for the controller and permission managment
- *
+ * abstract class for the controller and permission managment<br>
+ * <br>
  * please keep in mind, that the Controller is connected to the View programmatically {@link #create()},
  * adding your controller to your View-FXML will end in a total disaster.
  */
@@ -29,7 +29,7 @@ public abstract class Controller {
      */
     public Stage getStage() {
         if (stage == null) create();
-        if (userIsPermitted()) {
+        if (isPermittedUser()) {
             return stage;
         }
         createNoPermissionAlert();
@@ -80,18 +80,29 @@ public abstract class Controller {
 
     /**
      * checks if user is permitted
+     *
      * @return boolean if user is permitted
      */
-    public boolean userIsPermitted() {
+    public boolean isPermittedUser() {
         // if permitted groups is null, there are no permissions required for the controller
         if (getPermissionKey() == null) return true;
-        return Arrays.asList(UserSession.getInstance().getGroup().getPermissions()).contains(getPermissionKey());
+        return isPermittedUserToSpecificOperation(getPermissionKey());
+    }
+
+    /**
+     * checks if user has given permission
+     *
+     * @param key specific permission
+     * @return boolean if user has specific permission
+     */
+    public boolean isPermittedUserToSpecificOperation(PermissionKey key) {
+        return Arrays.asList(UserSession.getInstance().getGroup().getPermissions()).contains(key);
     }
 
     /**
      * creates alert when the user has no permissions
      */
-    private void createNoPermissionAlert() {
+    protected void createNoPermissionAlert() {
         AlertCreator.createError("Keine Rechte", "Du hast keine Rechte um diese Aktion auszuführen")
                 .show();
     }

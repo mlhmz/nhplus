@@ -8,7 +8,9 @@ import java.sql.*;
 import java.util.ArrayList;
 
 /**
- * Implements the {@link DAOimp} interface and overwrites the methods to create PreparedStatements
+ * DAO Class for the User<br>
+ * Creates PreparedStatements for all DAO Operations for the User<br>
+ * Implements the {@link DAOimp} interface
  */
 public class UserDAO extends DAOimp<User> {
 
@@ -22,7 +24,7 @@ public class UserDAO extends DAOimp<User> {
     protected PreparedStatement getCreateStatement(User user) throws SQLException {
         PreparedStatement statement = getPreparedStatement(
                 String.format("INSERT INTO %s ", USERS_TABLE_NAME) +
-                "(lastName, firstName, username, password, userGroup) VALUES (?, ?, ?, ?, ?)");
+                "(surname, firstName, username, password, userGroup) VALUES (?, ?, ?, ?, ?)");
         fillPreparedStatement(user, statement);
         return statement;
     }
@@ -56,7 +58,7 @@ public class UserDAO extends DAOimp<User> {
 
     @Override
     protected User getInstanceFromResultSet(ResultSet set) throws SQLException {
-        return new User(set.getLong("uid"), set.getString("lastName"),
+        return new User(set.getLong("uid"), set.getString("surname"),
                 set.getString("firstName"), set.getString("username"),
                 set.getString("password"), GroupFactory.getInstance().getGroup(set.getString("userGroup")));
     }
@@ -70,7 +72,7 @@ public class UserDAO extends DAOimp<User> {
     protected ArrayList<User> getListFromResultSet(ResultSet set) throws SQLException {
         ArrayList<User> users = new ArrayList<>();
         while (set.next()) {
-            users.add(new User(set.getLong("uid"), set.getString("lastName"),
+            users.add(new User(set.getLong("uid"), set.getString("surname"),
                     set.getString("firstName"), set.getString("username"),
                     set.getString("password"), GroupFactory.getInstance().getGroup(set.getString("userGroup"))));
         }
@@ -81,7 +83,7 @@ public class UserDAO extends DAOimp<User> {
     protected PreparedStatement getUpdateStatement(User user) throws SQLException {
         PreparedStatement preparedStatement = getPreparedStatement(
                 String.format("UPDATE %s SET ", USERS_TABLE_NAME) +
-                "lastName = ?, firstName = ?, username = ?, password = ?, userGroup = ? WHERE uid = ?;");
+                "surname = ?, firstName = ?, username = ?, password = ?, userGroup = ? WHERE uid = ?;");
         fillPreparedStatement(user, preparedStatement);
         preparedStatement.setLong(6, user.getUid());
         return preparedStatement;
@@ -103,7 +105,7 @@ public class UserDAO extends DAOimp<User> {
      * @throws SQLException throws if the a setString() Method of the Statement is out of index
      */
     private void fillPreparedStatement(User user, PreparedStatement statement) throws SQLException {
-        statement.setString(1, user.getLastName());
+        statement.setString(1, user.getSurname());
         statement.setString(2, user.getFirstName());
         statement.setString(3, user.getUsername());
         statement.setString(4, PasswordHashUtil.hashPassword(user.getPassword()));

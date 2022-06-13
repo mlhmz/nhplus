@@ -1,5 +1,7 @@
 package datastorage;
 
+import model.Caregiver;
+
 public class DAOFactory {
 
     private static DAOFactory instance;
@@ -21,5 +23,9 @@ public class DAOFactory {
 
     public PatientDAO createPatientDAO() {
         return new PatientDAO(ConnectionBuilder.getConnection());
+    }
+
+    public CaregiverDAO createCaregiverDAO() {
+        return new CaregiverDAO(ConnectionBuilder.getConnection());
     }
 }

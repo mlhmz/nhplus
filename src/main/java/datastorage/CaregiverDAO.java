@@ -27,14 +27,6 @@ public class CaregiverDAO extends DAOimp<Caregiver>{
      */
     @Override
     protected PreparedStatement getCreateStatement(Caregiver caregiver) throws SQLException {
-        /**
-         * CREATE TABLE CAREGIVER (
-         *      cid INT IDENTITY PRIMARY KEY,
-         *      firstname VARCHAR(60),
-         *      surname VARCHAR(60),
-         *      telephone VARCHAR(60)
-         *  )
-         */
         PreparedStatement statement = getPreparedStatement("INSERT INTO caregiver (firstname, surname, telephone) VALUES (?, ?, ?)");
         fillPreparedStatement(caregiver, statement);
         return statement;
@@ -118,7 +110,7 @@ public class CaregiverDAO extends DAOimp<Caregiver>{
      */
     @Override
     protected PreparedStatement getDeleteStatement(long key) throws SQLException {
-        PreparedStatement preparedStatement = getPreparedStatement("Delete FROM caregiver WHERE cid = ?");
+        PreparedStatement preparedStatement = getPreparedStatement("DELETE FROM caregiver WHERE cid = ?");
         preparedStatement.setLong(1, key);
         return preparedStatement;
     }

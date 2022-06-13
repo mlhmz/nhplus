@@ -35,6 +35,8 @@ public class AllTreatmentController {
     @FXML
     private TableColumn<Treatment, String> colDescription;
     @FXML
+    private TableColumn<Treatment, Integer> colCaregiver;
+    @FXML
     private ComboBox<String> comboBox;
     @FXML
     private Button btnNewTreatment;
@@ -61,6 +63,7 @@ public class AllTreatmentController {
         this.colBegin.setCellValueFactory(new PropertyValueFactory<Treatment, String>("begin"));
         this.colEnd.setCellValueFactory(new PropertyValueFactory<Treatment, String>("end"));
         this.colDescription.setCellValueFactory(new PropertyValueFactory<Treatment, String>("description"));
+        this.colCaregiver.setCellValueFactory(new PropertyValueFactory<Treatment, Integer>("cid"));
         this.tableView.setItems(this.tableviewContent);
         createComboBoxData();
     }

@@ -26,5 +26,5 @@ CREATE TABLE IF NOT EXISTS users (
     lastname VARCHAR(60),
     username VARCHAR(30) UNIQUE,
     password VARCHAR(255),
-    group VARCHAR(30)
+    userGroup VARCHAR(30)
 )

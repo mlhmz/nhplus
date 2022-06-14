@@ -2,24 +2,22 @@ package controller;
 
 import datastorage.PatientDAO;
 import datastorage.TreatmentDAO;
+import enums.PermissionKey;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.Patient;
 import model.Treatment;
 import datastorage.DAOFactory;
-import java.io.IOException;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AllTreatmentController {
+public class AllTreatmentController extends Controller {
     @FXML
     private TableView<Treatment> tableView;
     @FXML
@@ -42,6 +40,8 @@ public class AllTreatmentController {
     private Button btnNewTreatment;
     @FXML
     private Button btnDelete;
+
+    private Controller newTreatmentController, treatmentController;
 
     private ObservableList<Treatment> tableviewContent =
             FXCollections.observableArrayList();
@@ -137,6 +137,10 @@ public class AllTreatmentController {
 
     @FXML
     public void handleDelete(){
+        if (!isPermittedUserToSpecificOperation(PermissionKey.DELETE_TREATMENT)) {
+            createNoPermissionAlert(PermissionKey.DELETE_TREATMENT);
+            return;
+        }
         int index = this.tableView.getSelectionModel().getSelectedIndex();
         Treatment t = this.tableviewContent.remove(index);
         TreatmentDAO dao = DAOFactory.getDAOFactory().createTreatmentDAO();
@@ -153,8 +157,7 @@ public class AllTreatmentController {
             String p = this.comboBox.getSelectionModel().getSelectedItem();
             Patient patient = searchInList(p);
             newTreatmentWindow(patient);
-        }
-        catch(NullPointerException e){
+        } catch(NullPointerException e){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Information");
             alert.setHeaderText("Patient für die Behandlung fehlt!");
@@ -175,43 +178,53 @@ public class AllTreatmentController {
         });
     }
 
-    public void newTreatmentWindow(Patient patient){
-        try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/NewTreatmentView.fxml"));
-            AnchorPane pane = loader.load();
-            Scene scene = new Scene(pane);
-            //da die primaryStage noch im Hintergrund bleiben soll
-            Stage stage = new Stage();
-
-            NewTreatmentController controller = loader.getController();
-            controller.initialize(this, stage, patient);
-
-            stage.setScene(scene);
-            stage.setResizable(false);
-            stage.showAndWait();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+    public void newTreatmentWindow(Patient patient) {
+        if (newTreatmentController == null) {
+            newTreatmentController = new NewTreatmentController();
         }
+        Stage stage = newTreatmentController.getStage();
+
+        if (stage == null) {
+            return;
+        }
+
+        // in order to grab a class specific method, we need to cast the Controller to the NewTreatmentController
+        ((NewTreatmentController) newTreatmentController).initialize(this, patient);
+        stage.showAndWait();
     }
 
-    public void treatmentWindow(Treatment treatment){
-        try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/TreatmentView.fxml"));
-            AnchorPane pane = loader.load();
-            Scene scene = new Scene(pane);
-            //da die primaryStage noch im Hintergrund bleiben soll
-            Stage stage = new Stage();
-            TreatmentController controller = loader.getController();
-
-            controller.initializeController(this, stage, treatment);
-
-            stage.setScene(scene);
-            stage.setResizable(false);
-            stage.showAndWait();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+    public void treatmentWindow(Treatment treatment) {
+        if (treatmentController == null) {
+            treatmentController = new TreatmentController();
         }
+
+        Stage stage = treatmentController.getStage();
+
+        if (stage == null) {
+            return;
+        }
+
+        ((TreatmentController) treatmentController).initializeController(this, treatment);
+        stage.showAndWait();
+    }
+
+    @Override
+    public String getWindowTitle() {
+        return "Behandlungen";
+    }
+
+    @Override
+    public boolean isClosingAppOnX() {
+        return false;
+    }
+
+    @Override
+    public String getFxmlPath() {
+        return "/AllTreatmentView.fxml";
+    }
+
+    @Override
+    public PermissionKey getPermissionKey() {
+        return PermissionKey.SHOW_ALL_TREATMENTS;
     }
 }

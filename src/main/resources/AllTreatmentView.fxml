@@ -5,7 +5,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="500.0" prefWidth="855.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AllTreatmentController">
+
+<AnchorPane prefHeight="500.0" prefWidth="855.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <TableView fx:id="tableView" editable="true" layoutX="31.0" layoutY="35.0" onMouseClicked="#handleMouseClick" prefHeight="364.0" prefWidth="825.0" AnchorPane.bottomAnchor="75.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="80.0">
         <columns>

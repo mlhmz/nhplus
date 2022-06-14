@@ -2,6 +2,7 @@ package controller;
 
 import datastorage.PatientDAO;
 import datastorage.TreatmentDAO;
+import enums.PermissionKey;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -19,7 +20,7 @@ import java.util.List;
 /**
  * The <code>AllPatientController</code> contains the entire logic of the patient view. It determines which data is displayed and how to react to events.
  */
-public class AllPatientController {
+public class AllPatientController extends Controller {
     @FXML
     private TableView<Patient> tableView;
     @FXML
@@ -80,6 +81,10 @@ public class AllPatientController {
 
         //Anzeigen der Daten
         this.tableView.setItems(this.tableviewContent);
+
+        if (!isPermittedUserToSpecificOperation(PermissionKey.EDIT_PATIENT)) {
+            this.tableView.setEditable(false);
+        }
     }
 
     /**
@@ -166,6 +171,11 @@ public class AllPatientController {
      */
     @FXML
     public void handleDeleteRow() {
+        if (!isPermittedUserToSpecificOperation(PermissionKey.DELETE_PATIENT)) {
+            createNoPermissionAlert(PermissionKey.DELETE_PATIENT);
+            return;
+        }
+
         TreatmentDAO tDao = DAOFactory.getDAOFactory().createTreatmentDAO();
         Patient selectedItem = this.tableView.getSelectionModel().getSelectedItem();
         try {
@@ -182,6 +192,11 @@ public class AllPatientController {
      */
     @FXML
     public void handleAdd() {
+        if (!isPermittedUserToSpecificOperation(PermissionKey.CREATE_PATIENT)) {
+            createNoPermissionAlert(PermissionKey.CREATE_PATIENT);
+            return;
+        }
+
         String surname = this.txtSurname.getText();
         String firstname = this.txtFirstname.getText();
         String birthday = this.txtBirthday.getText();
@@ -208,4 +223,25 @@ public class AllPatientController {
         this.txtCarelevel.clear();
         this.txtRoom.clear();
     }
+
+    @Override
+    public String getWindowTitle() {
+        return "Patienten";
+    }
+
+    @Override
+    public boolean isClosingAppOnX() {
+        return false;
+    }
+
+    @Override
+    public String getFxmlPath() {
+        return "/AllPatientView.fxml";
+    }
+
+    @Override
+    public PermissionKey getPermissionKey() {
+        return PermissionKey.SHOW_ALL_PATIENTS;
+    }
+
 }

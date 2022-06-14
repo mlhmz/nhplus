@@ -35,6 +35,8 @@ public class ChangePasswordController extends Controller {
         // Initial creation of User DAO
         userDAO = DAOFactory.getDAOFactory().createUserDAO();
 
+        this.oldPasswordRequired = oldPasswordRequired;
+
         if (!oldPasswordRequired) {
             oldPasswordField.setDisable(true);
         }

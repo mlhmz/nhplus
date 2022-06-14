@@ -172,7 +172,7 @@ public class AllPatientController extends Controller {
     @FXML
     public void handleDeleteRow() {
         if (!isPermittedUserToSpecificOperation(PermissionKey.DELETE_PATIENT)) {
-            createNoPermissionAlert();
+            createNoPermissionAlert(PermissionKey.DELETE_PATIENT);
             return;
         }
 
@@ -193,7 +193,7 @@ public class AllPatientController extends Controller {
     @FXML
     public void handleAdd() {
         if (!isPermittedUserToSpecificOperation(PermissionKey.CREATE_PATIENT)) {
-            createNoPermissionAlert();
+            createNoPermissionAlert(PermissionKey.CREATE_PATIENT);
             return;
         }
 

@@ -135,7 +135,7 @@ public class AllTreatmentController extends Controller {
     @FXML
     public void handleDelete(){
         if (!isPermittedUserToSpecificOperation(PermissionKey.DELETE_TREATMENT)) {
-            createNoPermissionAlert();
+            createNoPermissionAlert(PermissionKey.DELETE_TREATMENT);
             return;
         }
         int index = this.tableView.getSelectionModel().getSelectedIndex();

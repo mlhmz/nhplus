@@ -32,7 +32,7 @@ public abstract class Controller {
         if (isPermittedUser()) {
             return stage;
         }
-        createNoPermissionAlert();
+        createNoPermissionAlert(getPermissionKey());
         return null;
     }
 
@@ -103,7 +103,21 @@ public abstract class Controller {
      * creates alert when the user has no permissions
      */
     protected void createNoPermissionAlert() {
-        AlertCreator.createError("Keine Rechte", "Du hast keine Rechte um diese Aktion auszuführen")
+        createNoPermissionAlert(null);
+    }
+
+    /**
+     * creates alert when the user has no permissions
+     */
+    protected void createNoPermissionAlert(PermissionKey permissionKey) {
+        String contentText;
+        if (permissionKey == null) {
+            contentText = "Sie haben keine Rechte um diese Operation auszuführen";
+        } else {
+            contentText = String.format("Sie haben keine Rechte um die Operation '%s' auszuführen.",
+                    permissionKey);
+        }
+        AlertCreator.createError("Keine Rechte", contentText)
                 .show();
     }
 

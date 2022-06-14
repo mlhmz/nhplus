@@ -67,4 +67,10 @@ public enum PermissionKey {
     PermissionKey(String description) {
         this.description = description;
     }
+
+
+    @Override
+    public String toString() {
+        return description;
+    }
 }

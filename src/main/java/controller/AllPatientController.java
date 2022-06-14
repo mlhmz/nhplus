@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.stage.Stage;
 import model.Patient;
 import utils.DateConverter;
 import datastorage.DAOFactory;
@@ -85,6 +86,19 @@ public class AllPatientController extends Controller {
         if (!isPermittedUserToSpecificOperation(PermissionKey.EDIT_PATIENT)) {
             this.tableView.setEditable(false);
         }
+    }
+
+    /**
+     * method to create the stage and check for the users permissions
+     * also checks if user has permission for editing and sets the editable state to the result of the check
+     *
+     * @return stage, null if user is not permitted
+     */
+    @Override
+    public Stage getStage() {
+        Stage stage = super.getStage();
+        tableView.setEditable(isPermittedUserToSpecificOperation(PermissionKey.EDIT_CAREGIVER));
+        return stage;
     }
 
     /**

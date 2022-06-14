@@ -17,7 +17,7 @@ public class TreatmentDAO extends DAOimp<Treatment> {
 
     @Override
     protected PreparedStatement getCreateStatement(Treatment treatment) throws SQLException {
-        PreparedStatement preparedStatement = getPreparedStatement("INSERT INTO treatment (pid, treatment_date, begin, end, description, remarks) VALUES (?, ?, ?, ?, ?, ?);");
+        PreparedStatement preparedStatement = getPreparedStatement("INSERT INTO treatment (pid, treatment_date, begin, end, description, remarks, cid) VALUES (?, ?, ?, ?, ?, ?, ?);");
         fillPreparedStatement(treatment, preparedStatement);
         return preparedStatement;
     }
@@ -34,7 +34,7 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         LocalDate date = DateConverter.convertStringToLocalDate(result.getString(3));
         LocalTime begin = DateConverter.convertStringToLocalTime(result.getString(4));
         LocalTime end = DateConverter.convertStringToLocalTime(result.getString(5));
-        Treatment m = new Treatment(result.getLong(1), result.getLong(2),
+        Treatment m = new Treatment(result.getLong(1), result.getLong(2), result.getLong(8),
                 date, begin, end, result.getString(6), result.getString(7));
         return m;
     }
@@ -52,7 +52,7 @@ public class TreatmentDAO extends DAOimp<Treatment> {
             LocalDate date = DateConverter.convertStringToLocalDate(result.getString(3));
             LocalTime begin = DateConverter.convertStringToLocalTime(result.getString(4));
             LocalTime end = DateConverter.convertStringToLocalTime(result.getString(5));
-            t = new Treatment(result.getLong(1), result.getLong(2),
+            t = new Treatment(result.getLong(1), result.getLong(2), result.getLong(8),
                     date, begin, end, result.getString(6), result.getString(7));
             list.add(t);
         }
@@ -61,9 +61,9 @@ public class TreatmentDAO extends DAOimp<Treatment> {
 
     @Override
     protected PreparedStatement getUpdateStatement(Treatment treatment) throws SQLException {
-        PreparedStatement preparedStatement = getPreparedStatement("UPDATE treatment SET pid = ?, treatment_date = ?, begin = ?, end = ?, description = ?, remarks = ? WHERE tid = ?");
+        PreparedStatement preparedStatement = getPreparedStatement("UPDATE treatment SET pid = ?, treatment_date = ?, begin = ?, end = ?, description = ?, remarks = ?, cid = ? WHERE tid = ?");
         fillPreparedStatement(treatment, preparedStatement);
-        preparedStatement.setLong(7, treatment.getTid());
+        preparedStatement.setLong(8, treatment.getTid());
         return preparedStatement;
     }
 
@@ -74,6 +74,7 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         preparedStatement.setString(4, treatment.getEnd());
         preparedStatement.setString(5, treatment.getDescription());
         preparedStatement.setString(6, treatment.getRemarks());
+        preparedStatement.setLong(7, treatment.getCid());
     }
 
     @Override

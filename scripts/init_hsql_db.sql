@@ -16,7 +16,8 @@ CREATE TABLE IF NOT EXISTS treatments (
     "begin" VARCHAR(10),
     "end" VARCHAR(10),
     description VARCHAR(200),
-    remarks VARCHAR(200)
+    remarks VARCHAR(200),
+    cid INT UNIQUE
 );
 
 -- User Table Creation
@@ -27,4 +28,12 @@ CREATE TABLE IF NOT EXISTS users (
     username VARCHAR(30) UNIQUE,
     password VARCHAR(255),
     userGroup VARCHAR(30)
-)
+);
+
+-- Caregiver Table Creation
+CREATE TABLE IF NOT EXISTS caregiver (
+      cid INT IDENTITY PRIMARY KEY,
+      firstname VARCHAR(60),
+      surname VARCHAR(60),
+      telephone VARCHAR(60)
+);

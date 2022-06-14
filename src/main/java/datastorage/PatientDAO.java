@@ -98,8 +98,10 @@ public class PatientDAO extends DAOimp<Patient> {
      */
     @Override
     protected PreparedStatement getUpdateStatement(Patient patient) throws SQLException {
-        PreparedStatement preparedStatement = getPreparedStatement("UPDATE patient SET firstname = ?, surname = ?, dateOfBirth = ?, carelevel = ?, roomnumber = ?");
+        PreparedStatement preparedStatement = getPreparedStatement(
+                "UPDATE patient SET firstname = ?, surname = ?, dateOfBirth = ?, carelevel = ?, roomnumber = ? WHERE pid = ?");
         fillPreparedStatement(patient, preparedStatement);
+        preparedStatement.setLong(6, patient.getPid());
         return preparedStatement;
     }
 
@@ -118,7 +120,7 @@ public class PatientDAO extends DAOimp<Patient> {
      */
     @Override
     protected PreparedStatement getDeleteStatement(long key) throws SQLException {
-        PreparedStatement preparedStatement = getPreparedStatement("Delete FROM patient WHERE pid = ?");
+        PreparedStatement preparedStatement = getPreparedStatement("DELETE FROM patient WHERE pid = ?");
         preparedStatement.setLong(1, key);
         return preparedStatement;
     }

@@ -58,12 +58,12 @@ public class LoginController extends Controller {
                 "Es gibt keinen Nutzer, bitte richten Sie einen Administrator-Nutzer ein").showAndWait();
 
         createInitialUserCreationDialog();
-
     }
 
     /**
      * handles the login button and validates the password hash
      */
+    @FXML
     public void handleLogin() {
         // obtains data from gui fields
         String username = this.username.getText();
@@ -85,6 +85,7 @@ public class LoginController extends Controller {
         }
 
         if (user == null) {
+            alert.show();
             return;
         }
 

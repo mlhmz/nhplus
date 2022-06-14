@@ -2,12 +2,12 @@ package controller;
 
 import datastorage.DAOFactory;
 import datastorage.TreatmentDAO;
+import enums.PermissionKey;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import model.Patient;
 import model.Treatment;
 import utils.DateConverter;
@@ -15,7 +15,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class NewTreatmentController {
+public class NewTreatmentController extends Controller {
     @FXML
     private Label lblSurname;
     @FXML
@@ -33,12 +33,10 @@ public class NewTreatmentController {
 
     private AllTreatmentController controller;
     private Patient patient;
-    private Stage stage;
 
-    public void initialize(AllTreatmentController controller, Stage stage, Patient patient) {
-        this.controller= controller;
+    public void initialize(AllTreatmentController controller, Patient patient) {
+        this.controller = controller;
         this.patient = patient;
-        this.stage = stage;
         showPatientData();
     }
 
@@ -74,5 +72,30 @@ public class NewTreatmentController {
     @FXML
     public void handleCancel(){
         stage.close();
+    }
+
+    @Override
+    public void initialize() {
+
+    }
+
+    @Override
+    public String getWindowTitle() {
+        return "Behandlung erstellen";
+    }
+
+    @Override
+    public boolean isClosingAppOnX() {
+        return false;
+    }
+
+    @Override
+    public String getFxmlPath() {
+        return "/NewTreatmentView.fxml";
+    }
+
+    @Override
+    public PermissionKey getPermissionKey() {
+        return PermissionKey.CREATE_TREATMENT;
     }
 }

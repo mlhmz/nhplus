@@ -61,7 +61,7 @@ public class TreatmentDAO extends DAOimp<Treatment> {
 
     @Override
     protected PreparedStatement getUpdateStatement(Treatment treatment) throws SQLException {
-        PreparedStatement preparedStatement = getPreparedStatement("UPDATE treatment SET pid = ?, treatment_date = ?, begin = ?, end = ?, description = ?, remarks = ?, WHERE tid = ?");
+        PreparedStatement preparedStatement = getPreparedStatement("UPDATE treatment SET pid = ?, treatment_date = ?, begin = ?, end = ?, description = ?, remarks = ? WHERE tid = ?");
         fillPreparedStatement(treatment, preparedStatement);
         preparedStatement.setLong(7, treatment.getTid());
         return preparedStatement;

@@ -3,16 +3,16 @@ package controller;
 import datastorage.DAOFactory;
 import datastorage.PatientDAO;
 import datastorage.TreatmentDAO;
+import enums.PermissionKey;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
 import model.Patient;
 import model.Treatment;
 import utils.DateConverter;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
-public class TreatmentController {
+public class TreatmentController extends Controller {
     @FXML
     private Label lblPatientName;
     @FXML
@@ -33,12 +33,11 @@ public class TreatmentController {
     private Button btnCancel;
 
     private AllTreatmentController controller;
-    private Stage stage;
+
     private Patient patient;
     private Treatment treatment;
 
-    public void initializeController(AllTreatmentController controller, Stage stage, Treatment treatment) {
-        this.stage = stage;
+    public void initializeController(AllTreatmentController controller, Treatment treatment) {
         this.controller= controller;
         PatientDAO pDao = DAOFactory.getDAOFactory().createPatientDAO();
         try {
@@ -85,5 +84,30 @@ public class TreatmentController {
     @FXML
     public void handleCancel(){
         stage.close();
+    }
+
+    @Override
+    public void initialize() {
+
+    }
+
+    @Override
+    public String getWindowTitle() {
+        return "Behandlung editieren";
+    }
+
+    @Override
+    public boolean isClosingAppOnX() {
+        return false;
+    }
+
+    @Override
+    public String getFxmlPath() {
+        return "/TreatmentView.fxml";
+    }
+
+    @Override
+    public PermissionKey getPermissionKey() {
+        return PermissionKey.EDIT_TREATMENT;
     }
 }

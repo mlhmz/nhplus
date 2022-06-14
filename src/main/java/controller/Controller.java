@@ -110,7 +110,9 @@ public abstract class Controller {
     /**
      * default javafx initialize class
      */
-    public abstract void initialize();
+    public void initialize() {
+
+    }
 
     /**
      * method to set window title to NHPlus - <code>TEXT</code>, if left empty, the window title will be set to NHPlus

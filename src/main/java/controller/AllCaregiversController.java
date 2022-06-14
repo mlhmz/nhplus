@@ -2,6 +2,7 @@ package controller;
 
 import datastorage.DAOFactory;
 import datastorage.CaregiverDAO;
+import enums.PermissionKey;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -11,6 +12,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.stage.Stage;
 import model.Caregiver;
 
 import java.sql.SQLException;
@@ -20,7 +22,7 @@ import java.util.List;
  * The <code>AllCaregiversController</code> contains the entire logic of the Caregiver view. It determines which data is displayed and how to react to events.
  */
 
-public class AllCaregiversController {
+public class AllCaregiversController extends Controller {
     @FXML
     private TableView<Caregiver> tableView;
     @FXML
@@ -67,6 +69,19 @@ public class AllCaregiversController {
 
         //Anzeigen der Daten
         this.tableView.setItems(this.tableviewContent);
+    }
+
+    /**
+     * method to create the stage and check for the users permissions
+     * also checks if user has permission for editing and sets the editable state to the result of the check
+     *
+     * @return stage, null if user is not permitted
+     */
+    @Override
+    public Stage getStage() {
+        Stage stage = super.getStage();
+        tableView.setEditable(isPermittedUserToSpecificOperation(PermissionKey.EDIT_CAREGIVER));
+        return stage;
     }
 
     /**
@@ -133,10 +148,13 @@ public class AllCaregiversController {
      */
     @FXML
     public void handleDeleteRow() {
-        //TreatmentDAO tDao = DAOFactory.getDAOFactory().createTreatmentDAO();
+        if (!isPermittedUserToSpecificOperation(PermissionKey.DELETE_CAREGIVER)) {
+            createNoPermissionAlert(PermissionKey.DELETE_CAREGIVER);
+            return;
+        }
+
         Caregiver selectedItem = this.tableView.getSelectionModel().getSelectedItem();
         try {
-            //tDao.deleteByPid(selectedItem.getPid());
             dao.deleteById(selectedItem.getCid());
             this.tableView.getItems().remove(selectedItem);
         } catch (SQLException e) {
@@ -149,6 +167,11 @@ public class AllCaregiversController {
      */
     @FXML
     public void handleAdd() {
+        if (!isPermittedUserToSpecificOperation(PermissionKey.CREATE_CAREGIVER)) {
+            createNoPermissionAlert(PermissionKey.CREATE_CAREGIVER);
+            return;
+        }
+
         String surname = this.txtSurname.getText();
         String firstname = this.txtFirstname.getText();
         String Telephone = this.txtTelephone.getText();
@@ -169,5 +192,25 @@ public class AllCaregiversController {
         this.txtFirstname.clear();
         this.txtSurname.clear();
         this.txtTelephone.clear();
+    }
+
+    @Override
+    public String getWindowTitle() {
+        return "Pfleger";
+    }
+
+    @Override
+    public boolean isClosingAppOnX() {
+        return false;
+    }
+
+    @Override
+    public String getFxmlPath() {
+        return "/AllCaregiverView.fxml";
+    }
+
+    @Override
+    public PermissionKey getPermissionKey() {
+        return PermissionKey.SHOW_ALL_CAREGIVERS;
     }
 }

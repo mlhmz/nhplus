@@ -16,7 +16,8 @@ CREATE TABLE IF NOT EXISTS treatments (
     "begin" VARCHAR(10),
     "end" VARCHAR(10),
     description VARCHAR(200),
-    remarks VARCHAR(200)
+    remarks VARCHAR(200),
+    cid INT UNIQUE
 );
 
 -- User Table Creation

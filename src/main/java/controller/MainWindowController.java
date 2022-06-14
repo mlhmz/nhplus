@@ -4,11 +4,14 @@ import datastorage.UserSession;
 import enums.PermissionKey;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 /**
  * homepage of the application
@@ -19,21 +22,21 @@ public class MainWindowController extends Controller {
     @FXML
     public Text userSessionText;
     @FXML
-    public Button treatmentsBtn, patientsBtn, usersBtn, logoutBtn;
+    public Button treatmentsBtn, patientsBtn, caregiversBtn, usersBtn, logoutBtn;
     @FXML
     public VBox vBox;
 
-    private Controller allPatientController, allTreatmentController, allUsersController, changePasswordController;
+    private Controller allPatientController, allTreatmentController, allUsersController, changePasswordController,
+    allCaregiversController;
 
     /**
      * intializes the stage
      */
     public void initialize() {
-        setUserSessionLabel();
-
         allPatientController = new AllPatientController();
         allTreatmentController = new AllTreatmentController();
         allUsersController = new AllUserController();
+        allCaregiversController = new AllCaregiversController();
         changePasswordController = new ChangePasswordController();
     }
 
@@ -44,6 +47,8 @@ public class MainWindowController extends Controller {
     public Stage getStage() {
         Stage stage = super.getStage();
 
+        setUserSessionLabel();
+
         // removes buttons for modules that the user has no permissions for
         if (!allPatientController.isPermittedUser()) {
             vBox.getChildren().remove(patientsBtn);
@@ -51,9 +56,13 @@ public class MainWindowController extends Controller {
         if (!allTreatmentController.isPermittedUser()) {
             vBox.getChildren().remove(treatmentsBtn);
         }
+        if (!allCaregiversController.isPermittedUser()) {
+            vBox.getChildren().remove(caregiversBtn);
+        }
         if (!allUsersController.isPermittedUser()) {
             vBox.getChildren().remove(usersBtn);
         }
+
 
         return stage;
     }
@@ -94,6 +103,11 @@ public class MainWindowController extends Controller {
     }
 
     @FXML
+    private void handleShowAllCaregivers(ActionEvent e) {
+        mainBorderPane.setCenter(allCaregiversController.getStage().getScene().getRoot());
+    }
+
+    @FXML
     private void handleChangePassword() {
         // initializing on every handle in order to change the uid when the user changes
         ((ChangePasswordController) changePasswordController).initialize(UserSession.getInstance().getUid(),
@@ -125,6 +139,9 @@ public class MainWindowController extends Controller {
         }
         if (!vBox.getChildren().contains(treatmentsBtn)) {
             vBox.getChildren().add(treatmentsBtn);
+        }
+        if (!vBox.getChildren().contains(caregiversBtn)) {
+            vBox.getChildren().add(caregiversBtn);
         }
         if (!vBox.getChildren().contains(usersBtn)) {
             vBox.getChildren().add(usersBtn);
@@ -158,15 +175,5 @@ public class MainWindowController extends Controller {
     @Override
     public PermissionKey getPermissionKey() {
         return PermissionKey.SHOW_HOMEPAGE;
-    }
-    @FXML
-    private void handleShowAllCaregivers(ActionEvent e) {
-        FXMLLoader loader = new FXMLLoader(Main.class.getResource("/AllCaregiverView.fxml"));
-        try {
-            mainBorderPane.setCenter(loader.load());
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        AllCaregiversController controller = loader.getController();
     }
 }

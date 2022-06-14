@@ -58,6 +58,22 @@ public enum PermissionKey {
      */
     DELETE_TREATMENT("Behandlung löschen"),
     /**
+     * Permission to the Caregiver Table (see {@link controller.AllCaregiversController})
+     */
+    SHOW_ALL_CAREGIVERS("Pfleger zeigen"),
+    /**
+     * Permission to the Caregiver Creation in the {@link controller.AllCaregiversController}
+     */
+    CREATE_CAREGIVER("Pfleger erstellen"),
+    /**
+     * Permission to the Caregiver Editing (see {@link controller.AllCaregiversController}}
+     */
+    EDIT_CAREGIVER("Pfleger bearbeiten"),
+    /**
+     * Permission to the Caregiver Deletion (see {@link controller.AllCaregiversController}}
+     */
+    DELETE_CAREGIVER("Pfleger löschen"),
+    /**
      * Permission to change the Password of a User Object (see {@link controller.ChangePasswordController})
      */
     CHANGE_PASSWORD("Passwort ändern");

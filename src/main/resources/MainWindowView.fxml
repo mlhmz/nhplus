@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
 
-<BorderPane fx:id="mainBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="688.0" prefWidth="926.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="mainBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="688.0" prefWidth="926.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <left>
-      <VBox id="vBox" fx:id="vBox" alignment="CENTER" spacing="50.0" styleClass="vBox" stylesheets="@Application.css" BorderPane.alignment="CENTER">
+      <VBox id="vBox" fx:id="vBox" alignment="CENTER" prefWidth="139.0" spacing="50.0" styleClass="vBox" stylesheets="@Application.css" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="patientsBtn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleShowAllPatient" prefWidth="105.0" text="Patienten/innen">
                <VBox.margin>
@@ -37,13 +41,17 @@
       </VBox>
    </left>
    <bottom>
-      <HBox alignment="CENTER_RIGHT" prefHeight="16.0" prefWidth="926.0" style="-fx-background-color: grey;" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER_LEFT" prefHeight="16.0" prefWidth="926.0" style="-fx-background-color: grey;" BorderPane.alignment="CENTER">
          <children>
-            <Label text="Angemeldet als:" />
-            <Text fx:id="userSessionText" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="831.0" HBox.hgrow="ALWAYS">
+            <Label prefHeight="17.0" prefWidth="88.0" text="Angemeldet als:">
+               <HBox.margin>
+                  <Insets left="5.0" />
+               </HBox.margin></Label>
+            <Text fx:id="userSessionText" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="732.0" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets bottom="5.0" left="2.0" top="5.0" />
                </HBox.margin></Text>
+            <Hyperlink onAction="#handleChangePassword" prefHeight="23.0" prefWidth="96.0" text="Passwort ändern" textFill="#003cff" />
          </children>
       </HBox>
    </bottom>

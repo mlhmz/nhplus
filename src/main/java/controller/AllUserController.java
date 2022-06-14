@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import model.Group;
 import model.GroupFactory;
@@ -103,6 +104,23 @@ public class AllUserController extends Controller {
     }
 
     /**
+     * Opens a Window with the Password Change Dialog {@link ChangePasswordController}
+     */
+    @FXML
+    public void handleOnChangePassword() {
+        if (tableView.getSelectionModel() != null) {
+            int index = tableView.getSelectionModel().getSelectedIndex();
+
+            User user = tableViewContent.get(index);
+
+            ChangePasswordController passwordController = new ChangePasswordController();
+            Stage stage = passwordController.getStage();
+            passwordController.initialize(user.getUid(), false);
+            stage.show();
+        }
+    }
+
+    /**
      * Deletes the Selected Entry in the Table
      */
     @FXML
@@ -125,14 +143,6 @@ public class AllUserController extends Controller {
             createDatabaseErrorAlert();
         }
         refreshTable();
-    }
-
-    /**
-     * Creates with the {@link AlertCreator} an Alert to inform the user that something with the Database went wrong
-     */
-    private void createDatabaseErrorAlert() {
-        AlertCreator.createError("Anwendungsfehler", "Irgendetwas ist beim Schreiben in die" +
-                "Datenbank schief gelaufen... Bitte versuchen Sie es erneut oder kontaktieren Sie den IT-Support");
     }
 
     /**
@@ -172,6 +182,14 @@ public class AllUserController extends Controller {
         event.getRowValue().setGroup(event.getNewValue());
         doUpdate(event);
         refreshTable();
+    }
+
+    /**
+     * Creates with the {@link AlertCreator} an Alert to inform the user that something with the Database went wrong
+     */
+    private void createDatabaseErrorAlert() {
+        AlertCreator.createError("Anwendungsfehler", "Irgendetwas ist beim Schreiben in die" +
+                "Datenbank schief gelaufen... Bitte versuchen Sie es erneut oder kontaktieren Sie den IT-Support");
     }
 
     /**

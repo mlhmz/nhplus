@@ -27,6 +27,7 @@
          <children>
             <Button fx:id="btnAdd" mnemonicParsing="false" onAction="#handleCreate" prefWidth="90.0" text="Hinzufügen" />
             <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#handleDelete" prefWidth="90.0" text="Löschen" />
+            <Button mnemonicParsing="false" onAction="#handleOnChangePassword" text="Passwort ändern" />
             <Button fx:id="btnRefresh" layoutX="110.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleRefresh" prefWidth="90.0" text="Aktualisieren" />
          </children></HBox>
       <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefWidth="200.0" spacing="25.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">

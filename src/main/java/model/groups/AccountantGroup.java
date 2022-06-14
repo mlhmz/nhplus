@@ -22,7 +22,8 @@ public class AccountantGroup implements Group {
         return new PermissionKey[] {
                 PermissionKey.SHOW_HOMEPAGE,
                 PermissionKey.SHOW_ALL_TREATMENTS,
-                PermissionKey.SHOW_ALL_PATIENTS
+                PermissionKey.SHOW_ALL_PATIENTS,
+                PermissionKey.CHANGE_PASSWORD
         };
     }
 }

@@ -92,6 +92,14 @@ public class MainWindowController extends Controller {
         mainBorderPane.setCenter(allUsersController.getStage().getScene().getRoot());
     }
 
+    @FXML
+    private void handleChangePassword() {
+        ChangePasswordController controller = new ChangePasswordController();
+        Stage stage = controller.getStage();
+        controller.initialize(UserSession.getInstance().getUid(), true);
+        stage.show();
+    }
+
     /**
      * logs the user out, resets the scene, deletes the session, shows the login stage, closes the MainWindowStage
      * triggered by the logout button

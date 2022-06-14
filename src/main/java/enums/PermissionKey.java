@@ -56,7 +56,11 @@ public enum PermissionKey {
     /**
      * Permission to the Treatment Deletion in the {@link controller.AllTreatmentController}
      */
-    DELETE_TREATMENT("Behandlung löschen");
+    DELETE_TREATMENT("Behandlung löschen"),
+    /**
+     * Permission to change the Password of a User Object (see {@link controller.ChangePasswordController})
+     */
+    CHANGE_PASSWORD("Passwort ändern");
 
     public final String description;
 

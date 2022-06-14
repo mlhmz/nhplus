@@ -115,7 +115,8 @@ public class LoginController extends Controller {
     }
 
     /**
-     * creates little dialog for the creation of an admin user
+     * creates little dialog for the creation of an admin user.<br>
+     * used an own dialog here to separate between the user creation with permissions and the initial user creation
      */
     private void createInitialUserCreationDialog() {
             Dialog<User> dialog = new Dialog<>();

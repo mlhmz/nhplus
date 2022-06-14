@@ -29,6 +29,7 @@ public class CaregiverGroup implements Group {
                 PermissionKey.DELETE_TREATMENT,
                 PermissionKey.SHOW_ALL_PATIENTS,
                 PermissionKey.SHOW_ALL_TREATMENTS,
+                PermissionKey.CHANGE_PASSWORD
         };
     }
 }

@@ -37,15 +37,18 @@ public class ChangePasswordController extends Controller {
 
         this.oldPasswordRequired = oldPasswordRequired;
 
-        if (!oldPasswordRequired) {
-            oldPasswordField.setDisable(true);
-        }
-
         try {
             this.user = userDAO.read(uid);
         } catch (SQLException e) {
             createExceptionError();
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void initialize() {
+        if (!oldPasswordRequired) {
+            oldPasswordField.setDisable(true);
         }
     }
 

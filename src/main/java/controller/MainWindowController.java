@@ -23,7 +23,7 @@ public class MainWindowController extends Controller {
     @FXML
     public VBox vBox;
 
-    private Controller allPatientController, allTreatmentController, allUsersController;
+    private Controller allPatientController, allTreatmentController, allUsersController, changePasswordController;
 
     /**
      * intializes the stage
@@ -34,6 +34,7 @@ public class MainWindowController extends Controller {
         allPatientController = new AllPatientController();
         allTreatmentController = new AllTreatmentController();
         allUsersController = new AllUserController();
+        changePasswordController = new ChangePasswordController();
     }
 
     /**
@@ -94,9 +95,10 @@ public class MainWindowController extends Controller {
 
     @FXML
     private void handleChangePassword() {
-        ChangePasswordController controller = new ChangePasswordController();
-        Stage stage = controller.getStage();
-        controller.initialize(UserSession.getInstance().getUid(), true);
+        // initializing on every handle in order to change the uid when the user changes
+        ((ChangePasswordController) changePasswordController).initialize(UserSession.getInstance().getUid(),
+                true);
+        Stage stage = changePasswordController.getStage();
         stage.show();
     }
 

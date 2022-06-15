@@ -1,5 +1,6 @@
 package controller;
 
+import datastorage.ConnectionBuilder;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import jobs.PatientsDeleteJob;
@@ -32,6 +33,12 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
+        if (ConnectionBuilder.getConnection() == null) {
+            System.out.println("The database is locked, " +
+                    "please end all Processes that access the Database and try it again.");
+            System.exit(1);
+            return;
+        }
         // Launching Quartz Cronjobs
         launchCronJobs();
         // Initializing & Launching JavaFX

@@ -32,5 +32,6 @@ zusätzliche Features:
 - Gruppen und Permissions
 - verändertes Controllersystem
 - Initiale Nutzer erstellung
+- SQL-Injection behoben
 
 Zwar weiß ich wie ich #14 umsetze, habe dies jedoch zeitlich nicht mehr geschafft.

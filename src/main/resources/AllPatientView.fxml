@@ -23,7 +23,7 @@
       </TableView>
       <HBox layoutX="623.0" layoutY="419.3999938964844" spacing="10.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0">
          <children>
-            <GridPane hgap="10.0" vgap="10.0">
+            <GridPane hgap="10.0" prefHeight="70.0" prefWidth="828.0" vgap="10.0">
               <columnConstraints>
                 <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" prefWidth="200.0" />
                 <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="200.0" prefWidth="200.0" />
@@ -38,7 +38,13 @@
                   <TextField fx:id="txtFirstname" minWidth="200.0" prefHeight="26.0" prefWidth="200.0" promptText="Vorname" />
                   <TextField fx:id="txtBirthday" minWidth="160.0" prefWidth="160.0" promptText="Geburtstag" GridPane.columnIndex="2" />
                   <TextField fx:id="txtCarelevel" prefHeight="26.0" prefWidth="200.0" promptText="Pflegegrad" GridPane.rowIndex="1" />
-                  <TextField fx:id="txtRoom" prefHeight="26.0" prefWidth="200.0" promptText="Raum" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField fx:id="txtRoom" prefHeight="26.0" prefWidth="192.0" promptText="Raum" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <HBox alignment="TOP_CENTER" prefHeight="0.0" prefWidth="247.0" spacing="10.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     <children>
+                        <Button fx:id="btnAdd" mnemonicParsing="false" onAction="#handleAdd" prefWidth="90.0" text="Hinzufügen" />
+                        <Button fx:id="btnLock" mnemonicParsing="false" onAction="#handleToggleLockMarkSelectedPatient" prefHeight="25.0" prefWidth="122.0" text="Ent- / sperren" />
+                     </children>
+                  </HBox>
                </children>
                <padding>
                   <Insets right="10.0" />
@@ -47,12 +53,6 @@
                   <Insets />
                </HBox.margin>
             </GridPane>
-            <HBox alignment="TOP_CENTER" prefWidth="190.0" spacing="10.0">
-               <children>
-                  <Button fx:id="btnAdd" mnemonicParsing="false" onAction="#handleAdd" prefWidth="90.0" text="Hinzufügen" />
-                  <Button fx:id="btnLock" mnemonicParsing="false" onAction="#handleToggleLockMarkSelectedPatient" prefWidth="90.0" text="Ent- / sperren" />
-               </children>
-            </HBox>
          </children>
       </HBox>
       <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefWidth="200.0" spacing="25.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="5.0">

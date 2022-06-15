@@ -2,6 +2,7 @@ package controller;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import jobs.PatientsDeleteJob;
 import jobs.PatientsLockJob;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
@@ -42,8 +43,11 @@ public class Main extends Application {
      */
     private static void launchCronJobs() {
         // Building the Job Details for the Jobs
-        JobDetail patientLockJob = newJob(PatientsLockJob.class)
+        JobDetail patientsLockJob = newJob(PatientsLockJob.class)
                 .withIdentity("lockJob", "patient")
+                .build();
+        JobDetail patientsDeleteJob = newJob(PatientsDeleteJob.class)
+                .withIdentity("deleteJob", "patient")
                 .build();
 
 
@@ -58,12 +62,23 @@ public class Main extends Application {
                         .repeatForever()
                 )
                 .build();
+        Trigger patientsDeleteTrigger = TriggerBuilder
+                .newTrigger()
+                .withIdentity("deleteTrigger", "patient")
+                .withDescription("Checks every Hour if any Patient has to be deleted")
+                .startNow()
+                .withSchedule(simpleSchedule()
+                        .withIntervalInHours(1)
+                        .repeatForever()
+                )
+                .build();
 
         try {
             // Starting the Scheduler and Scheduling the Triggers
             Scheduler scheduler = new StdSchedulerFactory().getScheduler();
             scheduler.start();
-            scheduler.scheduleJob(patientLockJob, patientsLockTrigger);
+            scheduler.scheduleJob(patientsLockJob, patientsLockTrigger);
+            scheduler.scheduleJob(patientsDeleteJob, patientsDeleteTrigger);
         } catch (SchedulerException ex) {
             ex.printStackTrace();
         }

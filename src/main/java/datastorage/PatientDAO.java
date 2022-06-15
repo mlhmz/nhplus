@@ -70,6 +70,32 @@ public class PatientDAO extends DAOimp<Patient> {
     }
 
     /**
+     * Gets all Patients that are locked with a deletionDate
+     *
+     * @return all Patients with that are locked with a deletion date
+     * @throws SQLException if something went wrong with the Database
+     */
+    public List<Patient> readAllLocked() throws SQLException {
+        ArrayList<Patient> list;
+        ResultSet result = getReadAllLockedStatement().executeQuery();
+        list = getListFromResultSet(result);
+        return list;
+    }
+
+    /**
+     * Creates PreparedStatement to get all Patients that are locked with a deletionDate
+     *
+     * @return A PreparedStatement to read all Patients that are locked with a deletionDate
+     * @throws SQLException if something went wrong while building the Statement
+     */
+    protected PreparedStatement getReadAllLockedStatement() throws SQLException {
+        PreparedStatement preparedStatement =
+                getPreparedStatement("SELECT * FROM patient WHERE locked = ? AND deletionDate IS NOT NULL");
+        preparedStatement.setBoolean(1, true);
+        return preparedStatement;
+    }
+
+    /**
      * Gets all Patients with a Lock Date
      *
      * @return all Patients with a Lock Date

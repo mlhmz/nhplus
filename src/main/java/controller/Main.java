@@ -2,8 +2,14 @@ package controller;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import jobs.PatientsLockJob;
+import org.quartz.*;
+import org.quartz.impl.StdSchedulerFactory;
 
 import java.io.IOException;
+
+import static org.quartz.JobBuilder.newJob;
+import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
 
 public class Main extends Application {
 
@@ -25,6 +31,41 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
+        // Launching Quartz Cronjobs
+        launchCronJobs();
+        // Initializing & Launching JavaFX
         launch(args);
+    }
+
+    /**
+     * Launches all Cronjobs of Application
+     */
+    private static void launchCronJobs() {
+        // Building the Job Details for the Jobs
+        JobDetail patientLockJob = newJob(PatientsLockJob.class)
+                .withIdentity("lockJob", "patient")
+                .build();
+
+
+        // Building Cron Triggers for the Jobs
+        Trigger patientsLockTrigger = TriggerBuilder
+                .newTrigger()
+                .withIdentity("lockTrigger", "patient")
+                .withDescription("Checks every 10 Minutes if any Patient has to be locked")
+                .startNow()
+                .withSchedule(simpleSchedule()
+                        .withIntervalInMinutes(10)
+                        .repeatForever()
+                )
+                .build();
+
+        try {
+            // Starting the Scheduler and Scheduling the Triggers
+            Scheduler scheduler = new StdSchedulerFactory().getScheduler();
+            scheduler.start();
+            scheduler.scheduleJob(patientLockJob, patientsLockTrigger);
+        } catch (SchedulerException ex) {
+            ex.printStackTrace();
+        }
     }
 }

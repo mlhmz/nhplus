@@ -52,5 +52,6 @@ Wird das Open JDK verwendet, werden JavaFX-Abhängigkeiten nicht importiert. Die
 - Bitte nicht in die Datenbank schauen, während die Applikation läuft. Das sorgt leider für einen Lock, der erst wieder verschwindet, wenn IntelliJ neugestartet wird!
 
 ## Testdokumentation
-Authentifizierungssystem: https://github.com/mlhmz/nhplus/pull/16
-Pflegermodul: https://github.com/mlhmz/nhplus/pull/13
+Authentifizierungssystem: [#16](https://github.com/mlhmz/nhplus/pull/16)
+Pflegermodul: [#13](https://github.com/mlhmz/nhplus/pull/13)
+Personalgruppe: [#18](https://github.com/mlhmz/nhplus/pull/18)

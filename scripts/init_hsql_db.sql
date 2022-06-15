@@ -6,7 +6,9 @@ CREATE TABLE IF NOT EXISTS patient (
     date_of_birth DATE,
     carelevel SMALLINT,
     roomNumber SMALLINT,
-    lockDate VARCHAR(25)
+    lockDate VARCHAR(25),
+    deletionDate VARCHAR(25),
+    locked BIT DEFAULT 0
 );
 
 -- Treatment Table Creation
@@ -18,7 +20,8 @@ CREATE TABLE IF NOT EXISTS treatment (
     "end" VARCHAR(10),
     description VARCHAR(200),
     remarks VARCHAR(200),
-    cid INT UNIQUE
+    cid INT UNIQUE,
+    locked BIT DEFAULT 0
 );
 
 -- User Table Creation

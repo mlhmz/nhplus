@@ -17,15 +17,13 @@ public class DateUtils {
 
     public static LocalDate convertStringToLocalDate(String date) {
         String[] array = date.split("-");
-        LocalDate result = LocalDate.of(Integer.parseInt(array[0]), Integer.parseInt(array[1]),
+        return LocalDate.of(Integer.parseInt(array[0]), Integer.parseInt(array[1]),
                 Integer.parseInt(array[2]));
-        return result;
     }
 
     public static LocalTime convertStringToLocalTime(String time) {
         String[] array = time.split(":");
-        LocalTime result = LocalTime.of(Integer.parseInt(array[0]), Integer.parseInt(array[1]));
-        return result;
+        return LocalTime.of(Integer.parseInt(array[0]), Integer.parseInt(array[1]));
     }
 
     /**
@@ -59,10 +57,60 @@ public class DateUtils {
         }
     }
 
+    /**
+     * Appends Hours to a Date
+     *
+     * @param date The Date object
+     * @param hours hours to add
+     * @return Date with added Hours
+     */
     public static Date appendHoursToDate(Date date, int hours) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        calendar.add(Calendar.HOUR, 24);
+        calendar.add(Calendar.HOUR, hours);
+        return calendar.getTime();
+    }
+
+    /**
+     * Appends Days to Date
+     *
+     * @param date The Date object
+     * @param days days to add
+     * @return Date with added Days
+     */
+    public static Date appendDaysToDate(Date date, int days) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        // The Day Constant DATE is the Day of the Month
+        calendar.add(Calendar.DATE, days);
+        return calendar.getTime();
+    }
+
+    /**
+     * Appends Months to Date
+     *
+     * @param date The Date object
+     * @param months days to add
+     * @return Date with added Months
+     */
+    public static Date appendMonthsToDate(Date date, int months) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.MONTH, months);
+        return calendar.getTime();
+    }
+
+    /**
+     * Appends Years to Date
+     *
+     * @param date The Date object
+     * @param years days to add
+     * @return Date with added Years
+     */
+    public static Date appendYearsToDate(Date date, int years) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.YEAR, years);
         return calendar.getTime();
     }
 

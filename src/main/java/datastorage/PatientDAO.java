@@ -1,19 +1,19 @@
 package datastorage;
 
 import model.Patient;
-import utils.DateConverter;
+import utils.DateUtils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Implements the Interface <code>DAOImp</code>. Overrides methods to generate specific patient-SQL-queries.
  */
 public class PatientDAO extends DAOimp<Patient> {
-
     /**
      * constructs Onbject. Calls the Constructor from <code>DAOImp</code> to store the connection.
      * @param conn
@@ -56,10 +56,11 @@ public class PatientDAO extends DAOimp<Patient> {
     @Override
     protected Patient getInstanceFromResultSet(ResultSet result) throws SQLException {
         Patient p = null;
-        LocalDate date = DateConverter.convertStringToLocalDate(result.getString(4));
+        LocalDate date = DateUtils.convertStringToLocalDate(result.getString(4));
         p = new Patient(result.getInt(1), result.getString(2),
                 result.getString(3), date, result.getString(5),
-                result.getString(6));
+                result.getString(6),
+                DateUtils.convertCompleteDateStringToString(result.getString(7)));
         return p;
     }
 
@@ -82,10 +83,11 @@ public class PatientDAO extends DAOimp<Patient> {
         ArrayList<Patient> list = new ArrayList<Patient>();
         Patient p = null;
         while (result.next()) {
-            LocalDate date = DateConverter.convertStringToLocalDate(result.getString(4));
+            LocalDate date = DateUtils.convertStringToLocalDate(result.getString(4));
             p = new Patient(result.getInt(1), result.getString(2),
                     result.getString(3), date,
-                    result.getString(5), result.getString(6));
+                    result.getString(5), result.getString(6),
+                    DateUtils.convertCompleteDateStringToString(result.getString(7)));
             list.add(p);
         }
         return list;
@@ -111,6 +113,58 @@ public class PatientDAO extends DAOimp<Patient> {
         preparedStatement.setString(3, patient.getDateOfBirth());
         preparedStatement.setString(4, patient.getCareLevel());
         preparedStatement.setString(5, patient.getRoomnumber());
+    }
+
+
+    /**
+     * Marks the Patient with his pid
+     *
+     * @param pid the identification of the patient
+     */
+    public void markLockByPid(long pid, Date lockDate) throws SQLException {
+        getLockMarkStatement(pid, lockDate).executeUpdate();
+    }
+
+    /**
+     * Creates a statement for locking the patients
+     *
+     * @param pid the patients id
+     * @param lockDate the date when the patient gets locked
+     * @return {@link PreparedStatement} filled with the content
+     * @throws SQLException thrown when something went wrong with the PreparedStatement e.g. out of index
+     */
+    private PreparedStatement getLockMarkStatement(long pid, Date lockDate) throws SQLException {
+        String dateString = DateUtils.convertCompleteDateToString(lockDate);
+        PreparedStatement preparedStatement = getPreparedStatement(
+                "UPDATE patient SET lockDate = ? WHERE pid = ?"
+        );
+        preparedStatement.setString(1, dateString);
+        preparedStatement.setLong(2, pid);
+        return preparedStatement;
+    }
+
+    /**
+     * Removes the Mark from the Patient with his <code>pid</code>
+     *
+     * @param pid the identification of the patient
+     */
+    public void removeLockMarkByPid(long pid) throws SQLException {
+        getRemoveLockMarkStatement(pid).executeUpdate();
+    }
+
+    /**
+     * Statement to remove Lock Mark from the User
+     *
+     * @param pid the identification of the user
+     * @return {@link PreparedStatement} which sets the <code>lockDate</code>of the <code>pid</code> param to null
+     * @throws SQLException thrown when something went wrong with the PreparedStatement e.g. out of index
+     */
+    private PreparedStatement getRemoveLockMarkStatement(long pid) throws SQLException {
+        PreparedStatement preparedStatement = getPreparedStatement(
+                "UPDATE patient SET lockDate = NULL WHERE pid = ?"
+        );
+        preparedStatement.setLong(1, pid);
+        return preparedStatement;
     }
 
     /**

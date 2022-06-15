@@ -1,8 +1,9 @@
 package model;
 
-import utils.DateConverter;
+import utils.DateUtils;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -13,6 +14,7 @@ public class Patient extends Person {
     private LocalDate dateOfBirth;
     private String careLevel;
     private String roomnumber;
+    private Date lockDate;
     private List<Treatment> allTreatments = new ArrayList<Treatment>();
 
     /**
@@ -32,19 +34,38 @@ public class Patient extends Person {
 
     /**
      * constructs a patient from the given params.
+     * @param firstName
+     * @param surname
+     * @param dateOfBirth
+     * @param careLevel
+     * @param roomnumber
+     * @param lockDate date when user will be locked
+     */
+    public Patient(String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomnumber, Date lockDate) {
+        super(firstName, surname);
+        this.dateOfBirth = dateOfBirth;
+        this.careLevel = careLevel;
+        this.roomnumber = roomnumber;
+        this.lockDate = lockDate;
+    }
+
+    /**
+     * constructs a patient from the given params.
      * @param pid
      * @param firstName
      * @param surname
      * @param dateOfBirth
      * @param careLevel
      * @param roomnumber
+     * @param lockDate date when user will be locked
      */
-    public Patient(long pid, String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomnumber) {
+    public Patient(long pid, String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomnumber, Date lockDate) {
         super(firstName, surname);
         this.pid = pid;
         this.dateOfBirth = dateOfBirth;
         this.careLevel = careLevel;
         this.roomnumber = roomnumber;
+        this.lockDate = lockDate;
     }
 
     /**
@@ -68,7 +89,7 @@ public class Patient extends Person {
      * @param dateOfBirth as string in the following format: YYYY-MM-DD
      */
     public void setDateOfBirth(String dateOfBirth) {
-        LocalDate birthday = DateConverter.convertStringToLocalDate(dateOfBirth);
+        LocalDate birthday = DateUtils.convertStringToLocalDate(dateOfBirth);
         this.dateOfBirth = birthday;
     }
 
@@ -102,6 +123,15 @@ public class Patient extends Person {
      */
     public void setRoomnumber(String roomnumber) {
         this.roomnumber = roomnumber;
+    }
+
+    /**
+     * gets the <code>lockDate</code> of the Patient
+     *
+     * @return the <code>lockDate</code> of the <code>Patient</code>
+     */
+    public Date getLockDate() {
+        return lockDate;
     }
 
     /**

@@ -1,16 +1,13 @@
 package controller;
 
 import datastorage.CaregiverDAO;
-import datastorage.DAO;
 import datastorage.DAOFactory;
 import datastorage.TreatmentDAO;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
 import javafx.util.Callback;
 import enums.PermissionKey;
-import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -18,7 +15,7 @@ import javafx.scene.control.TextField;
 import model.Patient;
 import model.Treatment;
 import model.Caregiver;
-import utils.DateConverter;
+import utils.DateUtils;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -91,8 +88,8 @@ public class NewTreatmentController extends Controller {
     public void handleAdd(){
         LocalDate date = this.datepicker.getValue();
         String s_begin = txtBegin.getText();
-        LocalTime begin = DateConverter.convertStringToLocalTime(txtBegin.getText());
-        LocalTime end = DateConverter.convertStringToLocalTime(txtEnd.getText());
+        LocalTime begin = DateUtils.convertStringToLocalTime(txtBegin.getText());
+        LocalTime end = DateUtils.convertStringToLocalTime(txtEnd.getText());
         String description = txtDescription.getText();
         String remarks = taRemarks.getText();
         Treatment treatment = new Treatment(patient.getPid(), date,

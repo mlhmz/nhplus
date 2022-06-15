@@ -1,15 +1,16 @@
 -- Patient Table Creation
-CREATE TABLE IF NOT EXISTS patients (
+CREATE TABLE IF NOT EXISTS patient (
     pid INT IDENTITY PRIMARY KEY,
     firstname VARCHAR(60),
     surname VARCHAR(60),
     date_of_birth DATE,
     carelevel SMALLINT,
-    roomNumber SMALLINT
+    roomNumber SMALLINT,
+    lockDate VARCHAR(25)
 );
 
 -- Treatment Table Creation
-CREATE TABLE IF NOT EXISTS treatments (
+CREATE TABLE IF NOT EXISTS treatment (
     tid INT IDENTITY PRIMARY KEY,
     pid INT,
     treatment_date DATE,

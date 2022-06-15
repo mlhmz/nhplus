@@ -134,7 +134,12 @@ public class TreatmentDAO extends DAOimp<Treatment> {
     }
 
     public void deleteByPid(long key) throws SQLException {
+        getDeleteByPidStatement(key).executeUpdate();
+    }
+
+    public PreparedStatement getDeleteByPidStatement(long key) throws SQLException {
         PreparedStatement preparedStatement = getPreparedStatement("DELETE FROM treatment WHERE pid = ?");
         preparedStatement.setLong(1, key);
+        return preparedStatement;
     }
 }

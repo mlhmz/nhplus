@@ -3,6 +3,7 @@ package model;
 import model.groups.AccountantGroup;
 import model.groups.AdminGroup;
 import model.groups.CaregiverGroup;
+import model.groups.PersonnelGroup;
 
 /**
  * Singleton-Factory for Groups
@@ -11,12 +12,13 @@ public class GroupFactory {
     private static GroupFactory instance;
 
     // groups are final because they only get instantiated once
-    private final Group adminGroup, caregiverGroup, accountantGroup;
+    private final Group adminGroup, caregiverGroup, accountantGroup, personnelGroup;
 
     private GroupFactory() {
         adminGroup = new AdminGroup();
         caregiverGroup = new CaregiverGroup();
         accountantGroup = new AccountantGroup();
+        personnelGroup = new PersonnelGroup();
     }
 
     /**
@@ -40,6 +42,8 @@ public class GroupFactory {
             return caregiverGroup;
         } else if (accountantGroup.getIdentifier().equals(type)) {
             return accountantGroup;
+        } else if (personnelGroup.getIdentifier().equals(type)) {
+            return personnelGroup;
         }
         throw new IllegalArgumentException(String.format("There is no group called '%s'", type));
     }
@@ -52,6 +56,7 @@ public class GroupFactory {
             adminGroup,
             caregiverGroup,
             accountantGroup,
+            personnelGroup
         };
     }
 }

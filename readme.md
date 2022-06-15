@@ -53,3 +53,4 @@ Wird das Open JDK verwendet, werden JavaFX-Abhängigkeiten nicht importiert. Die
 
 ## Testdokumentation
 Authentifizierungssystem: https://github.com/mlhmz/nhplus/pull/16
+Pflegermodul: https://github.com/mlhmz/nhplus/pull/13

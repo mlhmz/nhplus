@@ -13,6 +13,7 @@ public class Treatment {
     private LocalTime end;
     private String description;
     private String remarks;
+    private boolean locked;
 
     public Treatment(long pid, LocalDate date, LocalTime begin,
                      LocalTime end, String description, String remarks) {
@@ -44,6 +45,32 @@ public class Treatment {
         this.end = end;
         this.description = description;
         this.remarks = remarks;
+    }
+
+    /**
+     * Constructor for Treatments
+     *
+     * @param tid The treatment id
+     * @param pid The patient id
+     * @param cid The caregiver id
+     * @param date The date when the treatment was
+     * @param begin The time when the treatment began
+     * @param end The end when the treatment stopped
+     * @param description The description of the treatment
+     * @param remarks The remarks of the treatment
+     * @param locked status if the treatment is locked
+     */
+    public Treatment(long tid, long pid, long cid, LocalDate date, LocalTime begin,
+                     LocalTime end, String description, String remarks, boolean locked) {
+        this.tid = tid;
+        this.pid = pid;
+        this.cid = cid;
+        this.date = date;
+        this.begin = begin;
+        this.end = end;
+        this.description = description;
+        this.remarks = remarks;
+        this.locked = locked;
     }
 
     public Treatment(long tid, long pid, long cid, LocalDate date, LocalTime begin,

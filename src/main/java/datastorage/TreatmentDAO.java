@@ -34,14 +34,22 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         LocalDate date = DateUtils.convertStringToLocalDate(result.getString(3));
         LocalTime begin = DateUtils.convertStringToLocalTime(result.getString(4));
         LocalTime end = DateUtils.convertStringToLocalTime(result.getString(5));
-        Treatment m = new Treatment(result.getLong(1), result.getLong(2), result.getLong(8),
-                date, begin, end, result.getString(6), result.getString(7));
-        return m;
+        return new Treatment(result.getLong(1), result.getLong(2), result.getLong(8),
+                date, begin, end, result.getString(6), result.getString(7), result.getBoolean(9));
     }
 
+    /**
+     * statement to get all treatments except locked ones
+     *
+     * @return all treatments
+     * @throws SQLException if something went wrong with the database
+     */
     @Override
     protected PreparedStatement getReadAllStatement() throws SQLException {
-        return getPreparedStatement("SELECT * FROM treatment");
+        PreparedStatement preparedStatement =
+                getPreparedStatement("SELECT * FROM treatment WHERE locked = ?");
+        preparedStatement.setBoolean(1, false);
+        return preparedStatement;
     }
 
     @Override
@@ -53,7 +61,8 @@ public class TreatmentDAO extends DAOimp<Treatment> {
             LocalTime begin = DateUtils.convertStringToLocalTime(result.getString(4));
             LocalTime end = DateUtils.convertStringToLocalTime(result.getString(5));
             t = new Treatment(result.getLong(1), result.getLong(2), result.getLong(8),
-                    date, begin, end, result.getString(6), result.getString(7));
+                    date, begin, end, result.getString(6), result.getString(7),
+                    result.getBoolean(9));
             list.add(t);
         }
         return list;
@@ -99,8 +108,33 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         return preparedStatement;
     }
 
+    /**
+     * Locks all Treatments that have a certain Patient
+     *
+     * @param pid the patients id
+     * @throws SQLException if something went wrong in the database
+     */
+    public void lockByPid(long pid) throws SQLException {
+        getLockByPidStatement(pid).executeUpdate();
+    }
+
+    /**
+     * Statement to Lock all Treatments that have a certain Patient
+     *
+     * @param pid the patients id
+     * @throws SQLException if something went wrong in the database
+     */
+    public PreparedStatement getLockByPidStatement(long pid) throws SQLException {
+        PreparedStatement preparedStatement = getPreparedStatement(
+                "UPDATE treatment SET locked = ? WHERE pid = ?"
+        );
+        preparedStatement.setBoolean(1, true);
+        preparedStatement.setLong(2, pid);
+        return preparedStatement;
+    }
+
     public void deleteByPid(long key) throws SQLException {
-        PreparedStatement preparedStatement = getPreparedStatement("Delete FROM treatment WHERE pid = ?");
+        PreparedStatement preparedStatement = getPreparedStatement("DELETE FROM treatment WHERE pid = ?");
         preparedStatement.setLong(1, key);
     }
 }

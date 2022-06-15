@@ -15,6 +15,8 @@ public class Patient extends Person {
     private String careLevel;
     private String roomnumber;
     private Date lockDate;
+    private Date deletionDate;
+    private boolean locked;
     private List<Treatment> allTreatments = new ArrayList<Treatment>();
 
     /**
@@ -41,12 +43,36 @@ public class Patient extends Person {
      * @param roomnumber
      * @param lockDate date when user will be locked
      */
-    public Patient(String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomnumber, Date lockDate) {
+    public Patient(String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomnumber,
+                   Date lockDate) {
         super(firstName, surname);
         this.dateOfBirth = dateOfBirth;
         this.careLevel = careLevel;
         this.roomnumber = roomnumber;
         this.lockDate = lockDate;
+    }
+
+    /**
+     * constructs a patient from the given params.
+     * @param firstName
+     * @param surname
+     * @param dateOfBirth
+     * @param careLevel
+     * @param roomnumber
+     * @param lockDate date when user will be locked
+     * @param deletionDate date when user will be deleted, when the patient is locked
+     *                     it also has to 100% a deletion date
+     * @param locked boolean if patient is locked, most probably when the lockDate already expired
+     */
+    public Patient(String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomnumber,
+                   Date lockDate, Date deletionDate, boolean locked) {
+        super(firstName, surname);
+        this.dateOfBirth = dateOfBirth;
+        this.careLevel = careLevel;
+        this.roomnumber = roomnumber;
+        this.lockDate = lockDate;
+        this.deletionDate = deletionDate;
+        this.locked = locked;
     }
 
     /**
@@ -58,14 +84,20 @@ public class Patient extends Person {
      * @param careLevel
      * @param roomnumber
      * @param lockDate date when user will be locked
+     * @param deletionDate date when user will be deleted, when the patient is locked
+     *                     it also has to 100% a deletion date
+     * @param locked boolean if patient is locked, most probably when the lockDate already expired
      */
-    public Patient(long pid, String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomnumber, Date lockDate) {
+    public Patient(long pid, String firstName, String surname, LocalDate dateOfBirth, String careLevel,
+                   String roomnumber, Date lockDate, Date deletionDate, boolean locked) {
         super(firstName, surname);
         this.pid = pid;
         this.dateOfBirth = dateOfBirth;
         this.careLevel = careLevel;
         this.roomnumber = roomnumber;
         this.lockDate = lockDate;
+        this.deletionDate = deletionDate;
+        this.locked = locked;
     }
 
     /**

@@ -2,20 +2,19 @@ package datastorage;
 
 import model.Patient;
 import utils.DateUtils;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Implements the Interface <code>DAOImp</code>. Overrides methods to generate specific patient-SQL-queries.
  */
 public class PatientDAO extends DAOimp<Patient> {
     /**
-     * constructs Onbject. Calls the Constructor from <code>DAOImp</code> to store the connection.
+     * constructs Object. Calls the Constructor from <code>DAOImp</code> to store the connection.
      * @param conn
      */
     public PatientDAO(Connection conn) {
@@ -55,22 +54,45 @@ public class PatientDAO extends DAOimp<Patient> {
      */
     @Override
     protected Patient getInstanceFromResultSet(ResultSet result) throws SQLException {
-        Patient p = null;
-        LocalDate date = DateUtils.convertStringToLocalDate(result.getString(4));
-        p = new Patient(result.getInt(1), result.getString(2),
-                result.getString(3), date, result.getString(5),
-                result.getString(6),
-                DateUtils.convertCompleteDateStringToString(result.getString(7)));
-        return p;
+        return buildPatient(result);
     }
 
     /**
-     * generates a <code>SELECT</code>-Statement for all patients.
+     * generates a <code>SELECT</code>-Statement for all patients except locked ones.
      * @return <code>String</code> with the generated SQL.
      */
     @Override
     protected PreparedStatement getReadAllStatement() throws SQLException {
-        return getPreparedStatement("SELECT * FROM patient");
+        PreparedStatement preparedStatement =
+                getPreparedStatement("SELECT * FROM patient WHERE locked = ?");
+        preparedStatement.setBoolean(1, false);
+        return preparedStatement;
+    }
+
+    /**
+     * Gets all Patients with a Lock Date
+     *
+     * @return all Patients with a Lock Date
+     * @throws SQLException if something went wrong with the Database
+     */
+    public List<Patient> readAllWithLockDate() throws SQLException {
+        ArrayList<Patient> list;
+        ResultSet result = getReadAllWithLockDateStatement().executeQuery();
+        list = getListFromResultSet(result);
+        return list;
+    }
+
+    /**
+     * Creates PreparedStatement to get all Patients with a lockDate
+     *
+     * @return A PreparedStatement to read all Patients with a lockDate
+     * @throws SQLException if something went wrong while building the Statement
+     */
+    private PreparedStatement getReadAllWithLockDateStatement() throws SQLException {
+        PreparedStatement preparedStatement =
+                getPreparedStatement("SELECT * FROM patient WHERE lockDate IS NOT NULL AND locked = ?");
+        preparedStatement.setBoolean(1, false);
+        return preparedStatement;
     }
 
     /**
@@ -81,16 +103,28 @@ public class PatientDAO extends DAOimp<Patient> {
     @Override
     protected ArrayList<Patient> getListFromResultSet(ResultSet result) throws SQLException {
         ArrayList<Patient> list = new ArrayList<Patient>();
-        Patient p = null;
         while (result.next()) {
-            LocalDate date = DateUtils.convertStringToLocalDate(result.getString(4));
-            p = new Patient(result.getInt(1), result.getString(2),
-                    result.getString(3), date,
-                    result.getString(5), result.getString(6),
-                    DateUtils.convertCompleteDateStringToString(result.getString(7)));
-            list.add(p);
+            list.add(buildPatient(result));
         }
         return list;
+    }
+
+    /**
+     * Builds the Patient together out of a ResultSet
+     * @param result The ResultSet to build the Patient off
+     * @return The patient
+     * @throws SQLException If something went wrong while getting the content
+     */
+    private Patient buildPatient(ResultSet result) throws SQLException {
+        Patient p;
+        LocalDate date = DateUtils.convertStringToLocalDate(result.getString(4));
+        p = new Patient(result.getInt(1), result.getString(2),
+                result.getString(3), date, result.getString(5),
+                result.getString(6),
+                DateUtils.convertCompleteDateStringToString(result.getString(7)),
+                DateUtils.convertCompleteDateStringToString(result.getString(8)),
+                result.getBoolean(9));
+        return p;
     }
 
     /**
@@ -164,6 +198,33 @@ public class PatientDAO extends DAOimp<Patient> {
                 "UPDATE patient SET lockDate = NULL WHERE pid = ?"
         );
         preparedStatement.setLong(1, pid);
+        return preparedStatement;
+    }
+
+    /**
+     * Locks a Patient
+     *
+     * @param pid the identification of the patient
+     * @param deletionDate the date when the patient should be deleted
+     */
+    public void lockByPid(long pid, Date deletionDate) throws SQLException {
+        getLockByPidStatement(pid, deletionDate).executeUpdate();
+    }
+
+    /**
+     * Statement to Lock a Patient
+     *
+     * @param pid the identification of the patient
+     * @param deletionDate the date when the patient should be deleted
+     */
+    private PreparedStatement getLockByPidStatement(long pid, Date deletionDate) throws SQLException {
+        String dateString = DateUtils.convertCompleteDateToString(deletionDate);
+        PreparedStatement preparedStatement = getPreparedStatement(
+                "UPDATE patient SET locked = ?, deletionDate = ? WHERE pid = ?"
+        );
+        preparedStatement.setBoolean(1, true);
+        preparedStatement.setString(2, dateString);
+        preparedStatement.setLong(3, pid);
         return preparedStatement;
     }
 

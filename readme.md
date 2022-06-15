@@ -55,4 +55,5 @@ Wird das Open JDK verwendet, werden JavaFX-Abhängigkeiten nicht importiert. Die
 Authentifizierungssystem: [#16](https://github.com/mlhmz/nhplus/pull/16)  
 Pflegermodul: [#13](https://github.com/mlhmz/nhplus/pull/13)  
 Personalgruppe: [#18](https://github.com/mlhmz/nhplus/pull/18)  
-Markierung des Behandlungsende: [#19](https://github.com/mlhmz/nhplus/pull/19)
+Markierung des Behandlungsende: [#19](https://github.com/mlhmz/nhplus/pull/19)  
+Sperrung von Daten: [#20](https://github.com/mlhmz/nhplus/pull/20)

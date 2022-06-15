@@ -51,6 +51,14 @@ Wird das Open JDK verwendet, werden JavaFX-Abhängigkeiten nicht importiert. Die
 - Passwort: SA
 - Bitte nicht in die Datenbank schauen, während die Applikation läuft. Das sorgt leider für einen Lock, der erst wieder verschwindet, wenn IntelliJ neugestartet wird!
 
+## Logindaten
+| Gruppe mit Rechten | Benutzername       | Passwort |
+|--------------------|--------------------|----------|
+| Administration     | administrator      | 12345678 |
+| Personal           | personalverwaltung | 12345678 |
+| Pflege             | pfleger            | 01234567 |
+| Rechnungswesen     | rechnungswesen     | 01234567 |
+
 ## Testdokumentation
 Authentifizierungssystem: [#16](https://github.com/mlhmz/nhplus/pull/16)  
 Pflegermodul: [#13](https://github.com/mlhmz/nhplus/pull/13)  

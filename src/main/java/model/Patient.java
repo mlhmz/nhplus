@@ -1,6 +1,7 @@
 package model;
 
 import utils.DateUtils;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -164,6 +165,15 @@ public class Patient extends Person {
      */
     public Date getLockDate() {
         return lockDate;
+    }
+
+    /**
+     * gets the <code>deletionDate</code> of the Patient
+     *
+     * @return the <code>deletionDate</code> of the Patient
+     */
+    public Date getDeletionDate() {
+        return deletionDate;
     }
 
     /**

@@ -38,6 +38,9 @@ public class LoginController extends Controller {
         dao = DAOFactory.getDAOFactory().createUserDAO();
     }
 
+    /**
+     * Checks if Database has the USERS Table and a User, if not a initial Creation Dialog will be opened
+     */
     @Override
     public void initialize() {
         List<User> users = null;

@@ -13,13 +13,22 @@ import java.io.IOException;
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
 
+/**
+ * the main class, the entry point
+ */
 public class Main extends Application {
 
+    /**
+     * JavaFX EntryPoint
+     */
     @Override
     public void start(Stage loginStage) {
         executeLoginWindow();
     }
 
+    /**
+     * Creates Login Window
+     */
     public void executeLoginWindow() {
         try {
             createLoginWindow();
@@ -28,10 +37,17 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * Gets Login Window
+     */
     private void createLoginWindow() throws IOException {
         ControllerManager.getInstance().getLoginStage().show();
     }
 
+    /**
+     * the main method, entrypoint of the application
+     * @param args
+     */
     public static void main(String[] args) {
         if (ConnectionBuilder.getConnection() == null) {
             System.out.println("The database is locked, " +

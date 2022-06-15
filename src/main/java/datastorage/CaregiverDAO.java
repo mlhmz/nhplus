@@ -97,6 +97,9 @@ public class CaregiverDAO extends DAOimp<Caregiver>{
         return preparedStatement;
     }
 
+    /**
+     * Fills PreparedStatement with Caregiver Object
+     */
     private void fillPreparedStatement(Caregiver caregiver, PreparedStatement preparedStatement) throws SQLException {
         preparedStatement.setString(1, caregiver.getFirstName());
         preparedStatement.setString(2, caregiver.getSurname());

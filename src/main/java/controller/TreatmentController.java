@@ -8,7 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import model.Patient;
 import model.Treatment;
-import utils.DateConverter;
+import utils.DateUtils;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
@@ -52,7 +52,7 @@ public class TreatmentController extends Controller {
     private void showData(){
         this.lblPatientName.setText(patient.getSurname()+", "+patient.getFirstName());
         this.lblCarelevel.setText(patient.getCareLevel());
-        LocalDate date = DateConverter.convertStringToLocalDate(treatment.getDate());
+        LocalDate date = DateUtils.convertStringToLocalDate(treatment.getDate());
         this.datepicker.setValue(date);
         this.txtBegin.setText(this.treatment.getBegin());
         this.txtEnd.setText(this.treatment.getEnd());

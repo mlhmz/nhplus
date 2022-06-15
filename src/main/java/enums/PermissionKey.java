@@ -24,7 +24,7 @@ public enum PermissionKey {
     /**
      * Permission to the Patient Deletion in the {@link controller.AllPatientController}
      */
-    DELETE_PATIENT("Patient löschen"),
+    LOCK_AND_UNLOCK_PATIENT("Patient sperren und entsperren"),
     /**
      * Permission to the User Table (see {@link controller.AllUserController})
      */

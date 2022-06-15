@@ -1,6 +1,6 @@
 package model;
 
-import utils.DateConverter;
+import utils.DateUtils;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -83,17 +83,17 @@ public class Treatment {
     }
 
     public void setDate(String s_date) {
-        LocalDate date = DateConverter.convertStringToLocalDate(s_date);
+        LocalDate date = DateUtils.convertStringToLocalDate(s_date);
         this.date = date;
     }
 
     public void setBegin(String begin) {
-        LocalTime time = DateConverter.convertStringToLocalTime(begin);
+        LocalTime time = DateUtils.convertStringToLocalTime(begin);
         this.begin = time;
     }
 
     public void setEnd(String end) {
-        LocalTime time = DateConverter.convertStringToLocalTime(end);
+        LocalTime time = DateUtils.convertStringToLocalTime(end);
         this.end = time;
     }
 

@@ -1,9 +1,5 @@
 package model;
 
-import utils.DateConverter;
-
-import java.time.LocalDate;
-
 /**
  * Caregivers are treating the Patients.
  */

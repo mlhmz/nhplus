@@ -25,7 +25,7 @@ public class CaregiverGroup implements Group {
                 PermissionKey.CREATE_TREATMENT,
                 PermissionKey.EDIT_PATIENT,
                 PermissionKey.EDIT_TREATMENT,
-                PermissionKey.DELETE_PATIENT,
+                PermissionKey.LOCK_AND_UNLOCK_PATIENT,
                 PermissionKey.DELETE_TREATMENT,
                 PermissionKey.SHOW_ALL_PATIENTS,
                 PermissionKey.SHOW_ALL_TREATMENTS,

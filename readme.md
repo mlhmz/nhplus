@@ -17,6 +17,7 @@ Wird das Open JDK verwendet, werden JavaFX-Abhängigkeiten nicht importiert. Die
 | Personal           | personalverwaltung | 12345678 |
 | Pflege             | pfleger            | 01234567 |
 | Rechnungswesen     | rechnungswesen     | 01234567 |
+Wenn alle Logindaten gelöscht werden, kann initial ein Admin-Nutzer erstellt werden.
 
 ## Testdokumentation
 Authentifizierungssystem: [#16](https://github.com/mlhmz/nhplus/pull/16)  

@@ -30,7 +30,7 @@ zusätzliche Features:
 - Passwort ändern
 - Passwort Hashing
 - Gruppen und Permissions
-- verändertes Controllersystem
+- verändertes Controllersystem (mit abstraktem Controller und programmatischen Erstellen des Controllers)
 - Initiale Nutzer erstellung
 - SQL-Injection behoben
 

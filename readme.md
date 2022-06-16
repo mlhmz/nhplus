@@ -38,5 +38,5 @@ zusätzliche Features:
 - Initiale Nutzer erstellung
 - SQL-Injection behoben
 
-Zwar weiß ich wie ich [#15](https://github.com/mlhmz/nhplus/issue/15) umsetze, habe dies jedoch zeitlich nicht mehr geschafft.
+Zwar weiß ich wie ich [#14](https://github.com/mlhmz/nhplus/issues/14) umsetze, habe dies jedoch zeitlich nicht mehr geschafft.
 Auch hätte ich gerne das Logging und den Export im gängigen Dateiformat umgesetzt, und habe dies ebenfalls nicht geschafft.

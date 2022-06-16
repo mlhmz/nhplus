@@ -35,3 +35,4 @@ zusätzliche Features:
 - SQL-Injection behoben
 
 Zwar weiß ich wie ich #14 umsetze, habe dies jedoch zeitlich nicht mehr geschafft.
+Auch hätte ich gerne das Logging und den Export im gängigen Dateiformat umgesetzt, und habe dies ebenfalls nicht geschafft.

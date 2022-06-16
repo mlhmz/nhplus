@@ -1,5 +1,8 @@
 # NHPlus
 
+**Wichtig: Die JavaDocs sind per GitHub Pages aufrufbar**
+https://mlhmz.github.io/nhplus/
+
 ## Technische Hinweise
 
 Wird das Open JDK verwendet, werden JavaFX-Abhängigkeiten nicht importiert. Die Lösung besteht in der Installation der neuesten JDK-Version der Firma Oracle.
